@@ -26,6 +26,17 @@ set list
     userName = "cyberphysails";
     userEmail = "physqils@outlook.com";
   };
+
+  programs.ssh = {
+    enable = true;
+    matchBlocks = {
+      "github.com" = {
+        hostname = "github.com";
+        identityFile = "/home/physails/.ssh/github_rsa";
+        identitiesOnly = true;
+      };
+    };
+  };
   
   
   #home.packages = with pkgs: [
