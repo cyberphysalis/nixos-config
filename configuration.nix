@@ -8,6 +8,8 @@
 {
   # 安装 nvidia drivers 的必要选项
   nixpkgs.config.allowUnfree = true;
+  # explicit pulseaudio support in applications
+  #nixpkgs.config.pulseaudio = true;
 
   imports =
     [ # Include the results of the hardware scan.
@@ -54,9 +56,28 @@
   #   useXkbConfig = true; # use xkb.options in tty.
   # };
 
+  fonts = {
+    enableDefaultPackages = true;
+    packages = with pkgs; [
+      maple-mono-SC-NF
+      noto-fonts-emoji
+      font-awesome
+      (nerdfonts.override { fonts = [
+        "JetBrainsMono"
+        "Iosevka"
+      ];})
+    ];
+    fontconfig.defaultFonts = {
+      serif = [  "Maple Mono SC NF" "Font Awesome 6 Free" "Noto Color Emoji""Source Han Serif SC" "Source Han Serif TC" ];
+      sansSerif = [ "Maple Mono SC NF" "Font Awesome 6 Free" "Noto Color Emoji" "Source Han Serif SC" "Source Han Serif TC" ];
+      monospace = [ "Maple Mono SC NF" "Font Awesome 6 Free" "JetBrainsMono Nerd Font" "Noto Color Emoji" ];
+      emoji = [ "Font Awesome 6 Free" "Noto Color Emoji" ];
+    };
+  };
+
   # Enable the X11 windowing system.
   # services.xserver.enable = true;
-
+  
 
   
 
@@ -67,9 +88,6 @@
   # Enable CUPS to print documents.
   # services.printing.enable = true;
 
-  # Enable sound.
-  # sound.enable = true;
-  # hardware.pulseaudio.enable = true;
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
@@ -92,7 +110,7 @@
     git
     pciutils
   ];
-
+  
   # 将 vim 设为默认编辑器
   environment.variables.EDITOR = "vim";
  
@@ -122,6 +140,27 @@
         ];
       }
     ];
+  };
+
+  # sound
+  # Enable sound.
+  # sound.enable = true;
+  #hardware.pulseaudio = {
+  #  enable = true;
+  #  support32Bit = true;
+  #
+  #};
+  # rtkit is optional but recommended
+  security.rtkit.enable = true;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+
+    # If you want to use JACK applications, uncomment this
+    #jack.enable = true;
+
   };
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];

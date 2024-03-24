@@ -49,20 +49,21 @@ set list
     # https://alacritty.org/config-alacritty.html 
     settings = {
       selection = { save_to_clipboard = true; };
-      font = { size = 12; };
+#      font = { size = 12; };
     };
   };
 
-  home.file.".config/hypr/hyprland.conf".source = ./hyprland/hyprland.conf;
+  #home.file.".config/hypr/hyprland.conf".source = ./hyprland/hyprland.conf;
   
-  #wayland.windowManager.hyprland = {
+ # wayland.windowManager.hyprland = {
   #  enable = true;
+  #  extraConfig = (builtins.readFile ./hyprland/hyprland.conf);
   #  xwayland.enable = true;
   #  
   #  systemd.enable = true;
   #  package = config.wayland.windowManager.hyprland.package.override {
   #    debug = true;
   #  };
-  #};
+#  };
   programs.home-manager.enable = true; 
 }
