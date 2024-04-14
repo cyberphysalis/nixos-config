@@ -18,6 +18,7 @@ require("mason-lspconfig").setup({
 
 local cmp = require('cmp')
 cmp.setup {
+  preselect = cmp.PreselectMode.None,
   sources = {
     { name = 'nvim_lsp' }
   },
