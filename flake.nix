@@ -18,6 +18,13 @@
     };
 
     hyprland.url = "github:hyprwm/Hyprland";
+
+    physails-secrets = {
+      #url = "path:/home/physails/physails-secrets";
+      #url = "git+ssh://git@github.com/cyberphysails/secrets.git?shallow=1";
+      url = "git+https://github.com/cyberphysails/secrets.git?shallow=1";
+      flake = false;
+    };
   };
 
 
@@ -30,6 +37,7 @@
       inherit system;
     };
     hyprland-pkgs = inputs.hyprland;
+    physails-secrets = inputs.physails-secrets;
   in
   {
     # nixosConfigurations 即 NixOS 的系统配置文件，这是当前 flake 的输出
@@ -37,7 +45,7 @@
     nixosConfigurations.wang-nix = nixpkgs.lib.nixosSystem {
       inherit system;
 
-      specialArgs = { inherit nixpkgs-unstable hyprland-pkgs; };
+      specialArgs = { inherit nixpkgs-unstable hyprland-pkgs physails-secrets; };
       modules = [
         # 这里导入之前我们使用的 configuration.nix，
         # 这样旧的配置文件仍然能生效
@@ -53,13 +61,14 @@
           home-manager.users.physails.imports = [
             ./physails.nix
             ./hyprland/hm.nix
+            ./neovim/hm-module.nix
           ];
 
           # Optionally, use home-manager.extraSpecialArgs to pass
           # arguments to home.nix
           home-manager.extraSpecialArgs = {
             #inherit (inputs) hyprland-pkgs nixpkgs-unstable;
-            inherit hyprland-pkgs nixpkgs-unstable;
+            inherit hyprland-pkgs nixpkgs-unstable physails-secrets;
           };
         }
       ];

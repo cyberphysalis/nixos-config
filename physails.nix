@@ -1,13 +1,27 @@
 # Options 
 # https://nix-community.github.io/home-manager/options.xhtml
 #
-{ config, pkgs, ... }:
+{ config, pkgs, ... }@inputs:
 
 {
   home.stateVersion = "23.11";
 
   #home.username = "physails";
   #home.homeDirectory = "/home/physails";
+  programs.bash = {
+    enable = true;
+    #  Note that these commands will be run even in non-interactive
+    # fix problem that unpatched binary can't execute
+    # https://www.reddit.com/r/NixOS/comments/13uc87h/masonnvim_broke_on_nixos/
+    bashrcExtra = ''
+      export NIX_LD=$(nix eval --impure --raw --expr 'let pkgs = import <nixpkgs> {}; NIX_LD = pkgs.lib.fileContents "${pkgs.stdenv.cc}/nix-support/dynamic-linker"; in NIX_LD')
+    '';
+  };
+
+  home.packages = with pkgs; [
+    unzipNLS
+  ];
+
   programs.vim = {
     enable = true;
     defaultEditor = true;
@@ -25,31 +39,39 @@ set list
     enable = true;
     userName = "cyberphysails";
     userEmail = "physqils@outlook.com";
+    extraConfig = {
+      http."https://github.com".proxy = "socks5://127.0.0.1:7890";
+    };
   };
 
   programs.ssh = {
     enable = true;
-    matchBlocks = {
-      "github.com" = {
-        hostname = "github.com";
-        identityFile = "/home/physails/.ssh/github_rsa";
-        identitiesOnly = true;
-      };
-    };
+    matchBlocks = import "${inputs.physails-secrets}/ssh-hosts-config.nix";
+    #matchBlocks = inputs.physails-secrets.ssh-hosts-config;
+#      "github.com" = {
+#        hostname = "github.com";
+#        identityFile = "/home/physails/.ssh/github_rsa";
+#        identitiesOnly = true;
+#      };
+      ##      "gitlab.bitahub.com" = {
+#        hostname = "10.0.100.128";
+#        identityFile = "/home/physails/.ssh/gitlab_bitahub_rsa";
+    #};
   };
-  
-  
-  #home.packages = with pkgs: [
-  #  alacritty
-  #];
   
   programs.alacritty = {
     enable = true;
     # settings 值是一个 TOML value
-    # https://alacritty.org/config-alacritty.html 
+    # https://alacritty.org/config-alacritty.html
     settings = {
       selection = { save_to_clipboard = true; };
-#      font = { size = 12; };
+      font = { 
+        normal = {
+          family = "Maple Mono SC NF";
+          style = "Regular";
+        };
+        size = 12;
+      };
     };
   };
 

@@ -44,6 +44,9 @@
     enable = true;
     driSupport = true;
     driSupport32Bit = true;
+    extraPackages = with pkgs; [
+      vulkan-tools
+    ];
   };
 
   services.xserver.videoDrivers = ["nvidia"];

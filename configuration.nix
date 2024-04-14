@@ -57,21 +57,34 @@
   # };
 
   fonts = {
+    # 查看默认字体匹配项
+    # FC_DEBUG=1 fc-match 'serif'
     enableDefaultPackages = true;
     packages = with pkgs; [
       maple-mono-SC-NF
       noto-fonts-emoji
       font-awesome
+      wqy_zenhei
+      wqy_microhei
+#      source-sans
+#      source-serif
+#      source-han-sans
+#      source-han-serif
+
       (nerdfonts.override { fonts = [
+        "NerdFontsSymbolsOnly"
         "JetBrainsMono"
         "Iosevka"
       ];})
     ];
     fontconfig.defaultFonts = {
-      serif = [  "Maple Mono SC NF" "Font Awesome 6 Free" "Noto Color Emoji""Source Han Serif SC" "Source Han Serif TC" ];
-      sansSerif = [ "Maple Mono SC NF" "Font Awesome 6 Free" "Noto Color Emoji" "Source Han Serif SC" "Source Han Serif TC" ];
-      monospace = [ "Maple Mono SC NF" "Font Awesome 6 Free" "JetBrainsMono Nerd Font" "Noto Color Emoji" ];
-      emoji = [ "Font Awesome 6 Free" "Noto Color Emoji" ];
+      serif = [ "WenQuanYi Micro Hei" ];
+      sansSerif = [ "WenQuanYi Micro Hei" ];
+      monospace = [ "WenQuanYi Micro Hei Mono" ];
+      #serif = [ "Maple Mono SC NF" "Font Awesome 6 Free" "Noto Color Emoji" "Source Han Serif SC" ];
+      #sansSerif = [ "Maple Mono SC NF" "Font Awesome 6 Free" "Noto Color Emoji" "Source Han Sans SC" ];
+      #monospace = [ "Maple Mono SC NF" "JetBrainsMono Nerd Font" "Font Awesome 6 Free" "Noto Color Emoji" ];
+      emoji = [ "Noto Color Emoji" ];
     };
   };
 
@@ -109,6 +122,8 @@
     wget
     git
     pciutils
+
+    #brightnessctl
   ];
   
   # 将 vim 设为默认编辑器
@@ -121,6 +136,7 @@
   #   enable = true;
   #   enableSSHSupport = true;
   # };
+  programs.nix-ld.enable = true;
 
   # List services that you want to enable:
 

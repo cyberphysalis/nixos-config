@@ -192,12 +192,30 @@
         "url": "https://mirror.nju.edu.cn/git/nixpkgs.git"
       }
     },
+    "physails-secrets": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1713004058,
+        "narHash": "sha256-jRzUe18VqD5oGUkbBajDyQx67faCOLXS5wYpSji80K4=",
+        "ref": "refs/heads/main",
+        "rev": "73b1c9047f8326d6828ae0daf3b791b4f24448d6",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/cyberphysails/secrets.git"
+      },
+      "original": {
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/cyberphysails/secrets.git"
+      }
+    },
     "root": {
       "inputs": {
         "home-manager": "home-manager",
         "hyprland": "hyprland",
         "nixpkgs": "nixpkgs_2",
-        "nixpkgs-unstable": "nixpkgs-unstable"
+        "nixpkgs-unstable": "nixpkgs-unstable",
+        "physails-secrets": "physails-secrets"
       }
     },
     "systems": {

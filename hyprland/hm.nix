@@ -14,12 +14,14 @@ in
     inputs.nixpkgs-unstable.clash-verge-rev
   ];
 
+  # https://github.com/nix-community/home-manager/blob/master/modules/services/window-managers/hyprland.nix
   wayland.windowManager.hyprland = {
     enable = true;
     package = hyprPkgFromFlake;
     extraConfig = builtins.readFile ./config/hyprland.conf;
 
     xwayland.enable = true;
+    # 會生成額外配置在配置文件中
     systemd.enable = true;
   };
 
@@ -43,7 +45,7 @@ in
       "--enable-wayland-ime"
 
       # enable hardware acceleration - vulkan api
-      # "--enable-features=Vulkan"
+      #"--enable-features=Vulkan"
     ];
   };
 
@@ -81,6 +83,9 @@ in
       recursive = true;
     };
 
+    #".config/hypr/hyprland.conf".source =
+    #  config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos/hyprland/config/hyprland.conf";
+
     ".config/hypr/scripts" = {
       source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos/hyprland/scripts";
       recursive = true;
@@ -100,4 +105,16 @@ in
     enable = true;
     package = pkgs.rofi-wayland;
   };
+
+  # input method
+  # fcitx5
+  home.file = {
+    ".local/share/fcitx5/rime/double_pinyin_flypy.schema.yaml".source =
+      ./config/fcitx5-rime/double_pinyin_flypy.schema.yaml ;
+    ".local/share/fcitx5/rime/double_pinyin_flypy.custom.yaml".source =
+      config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos/hyprland/config/fcitx5-rime/double_pinyin_flypy.custom.yaml";
+    ".local/share/fcitx5/rime/default.custom.yaml".source =
+      config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos/hyprland/config/fcitx5-rime/default.custom.yaml";
+  };
+  
 }

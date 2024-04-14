@@ -1,0 +1,14 @@
+patch:
+  ascii_composer/switch_key:
+    Caps_lock: noop
+    Shift_L: commit_code
+    Shift_R: clear
+    Control_L: noop
+    Control_R: noop
+  switcher:
+    hotkeys:
+      - "Control+grave"            # 输入选项菜单 Control + `
+  menu:
+    page_size: 5                   # 候选词数量S
+  schema_list:
+    - schema: double_pinyin_flypy  # 使用小鹤双拼
