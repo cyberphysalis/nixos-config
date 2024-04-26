@@ -40,6 +40,7 @@ local plugins = {
   -- plugin name: nvim-lsp
   "hrsh7th/cmp-nvim-lsp", -- nvim-cmp source for neovim's built-in language server client.
   "L3MON4D3/LuaSnip", -- Snippet Engine
+  "lewis6991/gitsigns.nvim" -- display git hunks in side panel
 }
 
 require("lazy").setup(plugins)
