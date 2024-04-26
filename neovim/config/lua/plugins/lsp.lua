@@ -8,12 +8,20 @@ require("mason").setup({
   },
 })
 
+local file_ext = vim.fn.expand("%:e")
+local should_installed_lsp = {}
+if file_ext == "lua" then
+  table.insert(should_installed_lsp, "lua_ls")
+end
+vim.notify("lsp should installed:"..table.concat(should_installed_lsp, " "))
+
 require("mason-lspconfig").setup({
-  -- 确保安装，根据需要填写
-  ensure_installed = {
-    "lua_ls",
-    "gopls",
-  },
+  -- 确保需要安装的 LSP 服务，根据需要填写
+  ensure_installed = should_installed_lsp
+--  ensure_installed = {
+--    "lua_ls",
+--    "gopls",
+--   },
 })
 
 local cmp = require('cmp')
