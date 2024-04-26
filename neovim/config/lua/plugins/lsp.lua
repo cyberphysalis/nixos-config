@@ -23,12 +23,17 @@ require("mason-lspconfig").setup({
 --    "gopls",
 --   },
 })
-
+local luasnip = require("luasnip")
 local cmp = require('cmp')
 cmp.setup {
   preselect = cmp.PreselectMode.None,
   sources = {
     { name = 'nvim_lsp' }
+  },
+  snippet = {
+    expand = function(args)
+      luasnip.lsp_expand(args.body)
+    end,
   },
   mapping = cmp.mapping.preset.insert{
     -- tab 键向下补全候选词, shift-tab 向上选择
@@ -46,7 +51,20 @@ cmp.setup {
         fallback()
       end
     end, { 'i' }),
---    ['<CR>'] = cmp.confirm({ select = true }),
+--    ['<CR>'] = cmp.mapping.confirm({ select = true, behavior = cmp.ConfirmBehavior.Insert, }),
+    ['<CR>'] = cmp.mapping(function(fallback)
+        if cmp.visible() then
+            if luasnip.expandable() then
+                luasnip.expand()
+            else
+                cmp.confirm({
+                    select = true,
+                })
+            end
+        else
+            fallback()
+        end
+    end),
     ['<C-e>'] = cmp.mapping.abort(),  -- 取消补全，esc也可以退出
   },
 }

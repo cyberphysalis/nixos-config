@@ -39,6 +39,7 @@ local plugins = {
   "hrsh7th/nvim-cmp",
   -- plugin name: nvim-lsp
   "hrsh7th/cmp-nvim-lsp", -- nvim-cmp source for neovim's built-in language server client.
+  "L3MON4D3/LuaSnip", -- Snippet Engine
 }
 
 require("lazy").setup(plugins)
