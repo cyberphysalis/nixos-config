@@ -12,6 +12,8 @@ local file_ext = vim.fn.expand("%:e")
 local should_installed_lsp = {}
 if file_ext == "lua" then
   table.insert(should_installed_lsp, "lua_ls")
+elseif file_ext == "go" then
+  table.insert(should_installed_lsp, "gopls")
 end
 vim.notify("lsp should installed:"..table.concat(should_installed_lsp, " "))
 
