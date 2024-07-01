@@ -38,7 +38,7 @@
     prefixLength = 24;
   }];
   networking.defaultGateway = "192.168.66.1";
-  networking.nameservers = [ "114.114.114.114"];
+  networking.nameservers = [ "114.114.114.114" "8.8.8.8" ];
 
   # Set your time zone.
   time.timeZone = "Asia/Shanghai";
@@ -122,7 +122,10 @@
     wget
     git
     pciutils
-
+    xdg-utils
+    zoxide
+    tree
+    neofetch
     #brightnessctl
   ];
   
@@ -182,11 +185,39 @@
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  networking.firewall.enable = false;
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you
   # accidentally delete configuration.nix.
   # system.copySystemConfiguration = true;
+
+  # dns over https
+  networking.resolvconf.useLocalResolver = true;
+
+  services.dnscrypt-proxy2 = {
+    enable = true;
+    settings = {
+      ipv6_servers = true;
+      require_dnssec = false;
+
+      sources.public-resolvers = {
+        urls = [
+          "https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/public-resolvers.md"
+          "https://download.dnscrypt.info/resolvers-list/v3/public-resolvers.md"
+        ];
+        cache_file = "/var/lib/dnscrypt-proxy2/public-resolvers.md";
+        minisign_key = "RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3";
+      };
+
+      bootstrap_resolvers = [ "223.5.5.5:53" "8.8.8.8:53" ];
+      # You can choose a specific set of servers from https://github.com/DNSCrypt/dnscrypt-resolvers/blob/master/v3/public-resolvers.md
+      # server_names = [ ... ];
+    };
+  };
+
+  systemd.services.dnscrypt-proxy2.serviceConfig = {
+    StateDirectory = "dnscrypt-proxy";
+  };
 
   # This option defines the first version of NixOS you have installed on this particular machine,
   # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.

@@ -14,13 +14,18 @@ opt.expandtab = true
 opt.autoindent = true
 
 -- 防止包裹
-opt.wrap = false
+opt.wrap = true
 
 -- 光标行
 opt.cursorline = true
 
 -- 系统剪切板
 -- opt.clipboard:append("unnamedplus")
+
+opt.foldmethod = "expr"
+opt.foldexpr = "nvim_treesitter#foldexpr()"
+opt.foldenable = false
+opt.foldlevel = 99
 
 -- 默认新窗口在右和下
 opt.splitright = true
@@ -30,3 +35,6 @@ opt.splitbelow = true
 opt.termguicolors = true
 opt.signcolumn = "yes"
 vim.cmd.colorscheme "catppuccin-frappe"
+
+-- setup diagnostics
+-- vim.diagnostic.config({ virtual_text = false })

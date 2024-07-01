@@ -10,6 +10,8 @@ in
   home.packages = with pkgs; [
     libnotify
     swaylock-effects
+    # https://nixos.wiki/wiki/Polkit
+    lxqt.lxqt-policykit
   ] ++ [
     inputs.nixpkgs-unstable.clash-verge-rev
   ];

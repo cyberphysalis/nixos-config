@@ -1,4 +1,4 @@
-{ pkgs, ...}@inputs:
+{ pkgs, lib, ...}@inputs:
 let
   hyprPkgFromFlake = inputs.hyprland-pkgs.packages.${pkgs.system}.hyprland;
 in
@@ -41,6 +41,17 @@ in
   # https://github.com/NixOS/nixpkgs/blob/nixos-23.11/nixos/modules/programs/hyprland.nix
   #
   security.polkit.enable = true;
+  #security.polkit.debug = true;
+  #security.wrappers = {
+  #  clash = {
+  #    setuid = true;
+  #    setgid = true;
+  #    owner = "root";
+  #    group = "root";
+  #    #capabilities = "cap_net_bind_service,cap_net_admin=+ep";
+  #    source = "${inputs.nixpkgs-unstable.clash-verge-rev}/bin/clash-meta";
+  #  };
+  #};
 
   # for swaylock to unlock screen
   security.pam.services.swaylock = {};
@@ -51,6 +62,7 @@ in
 
   xdg.portal = {
     enable = true;
+    xdgOpenUsePortal = true;
     extraPortals = [
       (pkgs.xdg-desktop-portal-hyprland.override { hyprland = hyprPkgFromFlake; })
     ];

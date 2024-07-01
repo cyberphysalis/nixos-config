@@ -1,3 +1,6 @@
+
+
+
 require("mason").setup({
   ui = {
     icons = {
@@ -14,6 +17,9 @@ if file_ext == "lua" then
   table.insert(should_installed_lsp, "lua_ls")
 elseif file_ext == "go" then
   table.insert(should_installed_lsp, "gopls")
+elseif file_ext == "js" then
+  -- table.insert(should_installed_lsp, "biome")
+  table.insert(should_installed_lsp, "tsserver")
 end
 vim.notify("lsp should installed:"..table.concat(should_installed_lsp, " "))
 
@@ -114,5 +120,10 @@ lspconfig.lua_ls.setup {
 }
 
 lspconfig.gopls.setup {
+  capabilities = capabilities,
+}
+
+lspconfig.tsserver.setup{
+  -- capabilities = require("plugins.my").capabilities,
   capabilities = capabilities,
 }
