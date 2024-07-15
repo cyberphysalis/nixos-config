@@ -41,6 +41,14 @@ local plugins = {
   "hrsh7th/cmp-nvim-lsp", -- nvim-cmp source for neovim's built-in language server client.
   "L3MON4D3/LuaSnip", -- Snippet Engine
   "lewis6991/gitsigns.nvim", -- display git hunks in side panel
+  {
+    "romgrk/barbar.nvim",
+    dependencies = {
+    'lewis6991/gitsigns.nvim', -- OPTIONAL: for git status
+    'nvim-tree/nvim-web-devicons', -- OPTIONAL: for file icons
+    },
+    init = function() vim.g.barbar_auto_setup = false end,
+  },
   "Exafunction/codeium.vim",
 }
 
