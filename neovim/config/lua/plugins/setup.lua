@@ -49,7 +49,7 @@ local plugins = {
     },
     init = function() vim.g.barbar_auto_setup = false end,
   },
-  "Exafunction/codeium.vim",
+  "zbirenbaum/copilot.lua"
 }
 
 require("lazy").setup(plugins)

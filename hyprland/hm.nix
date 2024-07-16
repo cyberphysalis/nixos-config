@@ -1,6 +1,7 @@
 { config, pkgs, ... }@inputs:
 let
-  hyprPkgFromFlake = inputs.hyprland-pkgs.packages.${pkgs.system}.hyprland;
+  #hyprPkgFromFlake = inputs.hyprland-pkgs.packages.${pkgs.system}.hyprland;
+  hyprPkgFromFlake = pkgs.hyprland;
   waybarConfigFile = ./config/waybar/config.json;
   waybarConfig = pkgs.runCommand "config.json" { nativeBuildInputs = [ pkgs.jq ]; } ''
     jq -nf ${waybarConfigFile} > $out

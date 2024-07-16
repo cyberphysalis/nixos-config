@@ -3,7 +3,7 @@
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
 #{ inputs, config, lib, pkgs, ... }:
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, ... }@inputs:
 
 {
   # 安装 nvidia drivers 的必要选项
@@ -124,8 +124,10 @@
     pciutils
     xdg-utils
     zoxide
+    fzf
     tree
     neofetch
+    screen
     #brightnessctl
   ];
   
@@ -194,6 +196,18 @@
   # dns over https
   networking.resolvconf.useLocalResolver = true;
 
+  services.sing-box = {
+    enable = true;
+    package = inputs.nixpkgs-unstable.sing-box;
+    settings = {
+      experimental = {
+        clash_api = {
+          external_controller = "0.0.0.0:9090";
+        };
+      };
+    };
+  };
+  
   services.dnscrypt-proxy2 = {
     enable = true;
     settings = {
@@ -218,6 +232,18 @@
   systemd.services.dnscrypt-proxy2.serviceConfig = {
     StateDirectory = "dnscrypt-proxy";
   };
+
+  #systemd.services.sing-box = {
+  #  documentation = "https://sing-box.sagrenet.org";
+  #  description = "sing-box service";
+  #  after = [ "network.target" "nss-lookup.target"];
+  #  serviceConfig = {
+  #    CapabilityBoundingSet = "CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_SYS_PTRACE CAP_DAC_READ_SEARCH";
+  #    AmbientCapabilities = "CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_SYS_PTRACE CAP_DAC_READ_SEARCH";
+  #    ExecStart = "${pkgs.sing-box}/bin/sing-box -D /var/lib/sing-box -C /etc/sing-box run";
+  #    ExecReload = "${pkgs.sing-box}/";
+  #  };
+  #};
 
   # This option defines the first version of NixOS you have installed on this particular machine,
   # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
