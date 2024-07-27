@@ -38,3 +38,6 @@ vim.cmd.colorscheme "catppuccin-frappe"
 
 -- setup diagnostics
 -- vim.diagnostic.config({ virtual_text = false })
+
+-- set a global statusline, see `:h windows`
+opt.laststatus = 3

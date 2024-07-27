@@ -2,7 +2,7 @@ vim.g.mapleader = " "
 
 local keymap = vim.keymap
 
-keymap.set("n", "<leader>e", ":Neotree toggle<CR>")
+keymap.set("n", "<leader>e", ":Neotree position=float toggle<CR>")
 keymap.set("n", "<leader>a", "<C-w>h")
 keymap.set("n", "<leader>d", "<C-w>l")
 keymap.set("n", "<leader>s", "<C-w>j")
@@ -19,4 +19,5 @@ keymap.set("n", "<leader>qn", vim.diagnostic.goto_next)
 vim.g.codeium_disable_bindings = 1
 keymap.set("i", "<C-j>", function () return vim.fn['codeium#Accept']() end, { expr = true })
 -- when the esc key is not working
-keymap.set("i", ";;", "<Esc>")
+keymap.set("i", ";'", "<Esc>")
+
