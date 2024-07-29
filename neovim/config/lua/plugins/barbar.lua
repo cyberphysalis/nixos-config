@@ -48,7 +48,7 @@ require'barbar'.setup {
     button = '',
     -- Enables / disables diagnostic symbols
     diagnostics = {
-      [vim.diagnostic.severity.ERROR] = {enabled = true, icon = 'ﬀ'},
+      [vim.diagnostic.severity.ERROR] = {enabled = true, icon = '🔴'},
       [vim.diagnostic.severity.WARN] = {enabled = false},
       [vim.diagnostic.severity.INFO] = {enabled = false},
       [vim.diagnostic.severity.HINT] = {enabled = true},
@@ -82,7 +82,7 @@ require'barbar'.setup {
     -- Configure the icons on the bufferline based on the visibility of a buffer.
     -- Supports all the base icon options, plus `modified` and `pinned`.
     alternate = {filetype = {enabled = false}},
-    current = {buffer_index = true},
+    current = {buffer_index = false},
     inactive = {button = '×'},
     visible = {modified = {buffer_number = false}},
   },
@@ -117,14 +117,14 @@ require'barbar'.setup {
   -- Set the filetypes which barbar will offset itself for
   sidebar_filetypes = {
     -- Use the default values: {event = 'BufWinLeave', text = '', align = 'left'}
-    NvimTree = true,
+    -- NvimTree = true,
     -- Or, specify the text used for the offset:
     -- undotree = {
     --   text = 'undotree',
     --   align = 'center', -- *optionally* specify an alignment (either 'left', 'center', or 'right')
     -- },
     -- Or, specify the event which the sidebar executes when leaving:
-    -- ['neo-tree'] = {event = 'BufWipeout'},
+    ['neo-tree'] = {event = 'BufWipeout', text = 'NeoTree'},
     -- Or, specify all three
     -- Outline = {event = 'BufWinLeave', text = 'symbols-outline', align = 'right'},
   },
