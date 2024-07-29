@@ -20,3 +20,6 @@ keymap.set("n", "<leader>qn", vim.diagnostic.goto_next)
 -- keymap.set("i", "<C-j>", function () return vim.fn['codeium#Accept']() end, { expr = true })
 -- when the esc key is not working
 keymap.set("i", ";;", "<Esc>")
+
+-- Do not yank with x 
+keymap.set("n", "x", "\"_x")

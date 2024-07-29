@@ -127,6 +127,7 @@
     fzf
     tree
     neofetch
+    zellij
     screen
     #brightnessctl
   ];
