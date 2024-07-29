@@ -127,3 +127,16 @@ lspconfig.tsserver.setup{
   -- capabilities = require("plugins.my").capabilities,
   capabilities = capabilities,
 }
+
+require('copilot').setup({
+  suggestion = {
+    auto_trigger = true,
+    keymap = {
+      accept = "<C-j>",
+    }
+  },
+  filetypes = {
+    markdown = true,
+    yaml = true,
+  },
+})

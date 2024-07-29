@@ -10,9 +10,14 @@
   #home.homeDirectory = "/home/physails";
   programs.bash = {
     enable = true;
+    enableCompletion = true;
     #  Note that these commands will be run even in non-interactive
     # fix problem that unpatched binary can't execute
     # https://www.reddit.com/r/NixOS/comments/13uc87h/masonnvim_broke_on_nixos/
+    initExtra = ''
+      source <(zoxide init --cmd cd bash)
+      eval "$(fzf --bash)"
+    '';
     bashrcExtra = ''
       export NIX_LD=$(nix eval --impure --raw --expr 'let pkgs = import <nixpkgs> {}; NIX_LD = pkgs.lib.fileContents "${pkgs.stdenv.cc}/nix-support/dynamic-linker"; in NIX_LD')
     '';
@@ -40,7 +45,7 @@ set list
     userName = "cyberphysails";
     userEmail = "physqils@outlook.com";
     extraConfig = {
-      http."https://github.com".proxy = "socks5://127.0.0.1:7890";
+      http."https://github.com".proxy = "socks5://192.168.66.11:7890";
     };
   };
 

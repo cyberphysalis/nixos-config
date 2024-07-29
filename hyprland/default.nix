@@ -1,6 +1,7 @@
 { pkgs, lib, ...}@inputs:
 let
-  hyprPkgFromFlake = inputs.hyprland-pkgs.packages.${pkgs.system}.hyprland;
+  #hyprPkgFromFlake = inputs.hyprland-pkgs.packages.${pkgs.system}.hyprland;
+  hyprPkgFromFlake = pkgs.hyprland;
 in
 {
   #pkgs.config.pulseaudio = true;
