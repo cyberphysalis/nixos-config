@@ -20,6 +20,7 @@ local plugins = {
   -- theme
   { "catppuccin/nvim", name = "catppuccin", priority = 1000, config = function () vim.cmd.colorscheme "catppuccin-frappe" end},
   { 'nvim-lualine/lualine.nvim', dependencies = { 'nvim-tree/nvim-web-devicons' }},
+  { import = "plugins.ui" },
   { import = "plugins.bufferline" },
   -- file explorer
   { import = "plugins.neo-tree" },

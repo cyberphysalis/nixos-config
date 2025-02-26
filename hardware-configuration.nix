@@ -25,7 +25,6 @@
     { device = "/dev/disk/by-uuid/3BC8-2379";
       fsType = "vfat";
     };
-
   swapDevices =
     [ { device = "/dev/disk/by-uuid/9b4c3448-42e7-4ae8-aeac-a30a6972ff4d"; }
     ];
@@ -40,17 +39,22 @@
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-  hardware.opengl = {  
-    enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
-    extraPackages = with pkgs; [
-      vulkan-tools
-    ];
-  };
+  #hardware.opengl = {  
+  #  enable = true;
+  #  driSupport = true;
+  #  driSupport32Bit = true;
+  #  extraPackages = with pkgs; [
+  #    vulkan-tools
+  #  ];
+  #};
 
   services.xserver.videoDrivers = ["nvidia"];
   
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+  };
+
   hardware.nvidia = {
     modesetting.enable = true;
     # Nvidia power management. Experimental, and can cause sleep/suspend to fail.

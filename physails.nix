@@ -30,13 +30,19 @@
   programs.vim = {
     enable = true;
     defaultEditor = true;
+    # color code
+    # https://upload.wikimedia.org/wikipedia/commons/1/15/Xterm_256color_chart.svg
     extraConfig = ''
-set tabstop=2
-set shiftwidth=2
-set expandtab
-syntax on
-colorscheme default
-set list
+      set relativenumber
+      set tabstop=2
+      set shiftwidth=2
+      set expandtab
+      syntax on
+      colorscheme default
+      set list
+      set cursorline
+      hi CursorLineNr   cterm=NONE ctermbg=None ctermfg=None
+      hi CursorLine     cterm=NONE ctermbg=243 ctermfg=white
     '';
   };
 
@@ -69,15 +75,35 @@ set list
     # settings 值是一个 TOML value
     # https://alacritty.org/config-alacritty.html
     settings = {
+      env = {
+        # use `infocmp xterm-256color` to check terminfo
+        "TERM" = "xterm-256color";
+      };
       selection = { save_to_clipboard = true; };
-      font = { 
+      font = {
         normal = {
           family = "Maple Mono SC NF";
           style = "Regular";
         };
         size = 12;
       };
+      window = {
+        blur = true;
+        opacity = 0.7;
+      };
+      terminal = {
+        osc52 = "CopyPaste";
+      };
     };
+  };
+
+  programs.zsh = {
+    enable = true;
+    autocd = true;
+    autosuggestion = {
+      enable = true;
+    };
+    enableCompletion = true;
   };
 
   #home.file.".config/hypr/hyprland.conf".source = ./hyprland/hyprland.conf;
@@ -92,5 +118,6 @@ set list
   #    debug = true;
   #  };
 #  };
+
   programs.home-manager.enable = true; 
 }

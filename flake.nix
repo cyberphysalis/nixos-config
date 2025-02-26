@@ -4,20 +4,45 @@
   # inputs 定义当前 flake 库的依赖项
   inputs = {
     # nixpkgs 依赖
-    nixpkgs = {
-      # url 属性定义依赖源；这里使用 NixOS 官方软件源 nixos-23.11 分支的 nju 镜像
-      url = "git+https://mirror.nju.edu.cn/git/nixpkgs.git?ref=nixos-24.05";
-    };
+    # nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11"
+    # url 属性定义依赖源；这里使用 NixOS 官方软件源 nixos-23.11 分支的 nju 镜像
+    nixpkgs.url = "git+https://mirror.nju.edu.cn/git/nixpkgs.git?ref=nixos-24.11";
 
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
     # home-manager 依赖
     home-manager = {
-      url = "github:nix-community/home-manager/release-24.05"; 
+      url = "github:nix-community/home-manager/release-24.11"; 
       inputs.nixpkgs.follows = "nixpkgs"; 
     };
 
+    home-manager-unstable = {
+      url = "github:nix-community/home-manager/master"; 
+      inputs.nixpkgs.follows = "nixpkgs-unstable"; 
+    };
+
     hyprland.url = "github:hyprwm/Hyprland";
+
+    niri = {
+      url = "github:sodiboo/niri-flake";
+      inputs.nixpkgs.follows = "nixpkgs"; 
+    };
+
+    zen-browser = {
+      url = "github:0xc000022070/zen-browser-flake";
+      inputs.nixpkgs.follows = "nixpkgs"; 
+    };
+
+    nur = {
+      url = "github:nix-community/NUR";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    stylix = {
+      url = "github:danth/stylix";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
 
     physails-secrets = {
       #url = "path:/home/physails/physails-secrets";
@@ -38,6 +63,9 @@
     };
     hyprland-pkgs = inputs.hyprland;
     physails-secrets = inputs.physails-secrets;
+    niri = inputs.niri;
+    zen-browser = inputs.zen-browser;
+    nur = inputs.nur;
   in
   {
     # nixosConfigurations 即 NixOS 的系统配置文件，这是当前 flake 的输出
@@ -45,12 +73,15 @@
     nixosConfigurations.wang-nix = nixpkgs.lib.nixosSystem {
       inherit system;
 
-      specialArgs = { inherit nixpkgs-unstable hyprland-pkgs physails-secrets; };
+      specialArgs = { inherit nixpkgs-unstable hyprland-pkgs physails-secrets niri zen-browser nur; };
       modules = [
         # 这里导入之前我们使用的 configuration.nix，
         # 这样旧的配置文件仍然能生效
         ./configuration.nix
-        ./hyprland
+        ./login.nix
+#        ./hyprland
+        niri.nixosModules.niri
+        ./niri/niri.nix
         #hyprland.nixosMoudles.default
         #{ programs.hyprland.enable = true; }
         home-manager.nixosModules.home-manager
@@ -60,7 +91,8 @@
 
           home-manager.users.physails.imports = [
             ./physails.nix
-            ./hyprland/hm.nix
+#            ./hyprland/hm.nix
+            ./niri/hm.nix
             ./neovim/hm-module.nix
           ];
 
@@ -68,7 +100,7 @@
           # arguments to home.nix
           home-manager.extraSpecialArgs = {
             #inherit (inputs) hyprland-pkgs nixpkgs-unstable;
-            inherit hyprland-pkgs nixpkgs-unstable physails-secrets;
+            inherit hyprland-pkgs nixpkgs-unstable zen-browser nur physails-secrets;
           };
         }
       ];

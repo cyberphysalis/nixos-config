@@ -11,6 +11,7 @@
   # explicit pulseaudio support in applications
   #nixpkgs.config.pulseaudio = true;
 
+  nixpkgs.overlays = [ inputs.niri.overlays.niri ];
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
@@ -37,8 +38,9 @@
     address = "192.168.66.13";
     prefixLength = 24;
   }];
-  networking.defaultGateway = "192.168.66.1";
-  networking.nameservers = [ "114.114.114.114" "8.8.8.8" ];
+  networking.defaultGateway = "192.168.66.12";
+  # nameserver must be ip address without port
+  networking.nameservers = [ "192.168.66.12" ];
 
   # Set your time zone.
   time.timeZone = "Asia/Shanghai";
@@ -48,7 +50,10 @@
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
+  i18n = {
+    defaultLocale = "en_US.UTF-8";
+    supportedLocales = ["zh_CN.UTF-8/UTF-8" "en_US.UTF-8/UTF-8"];
+  };
 
   # console = {
   #   font = "Lat2-Terminus16";
@@ -109,6 +114,7 @@
   users.users.physails = {
     isNormalUser = true;
     extraGroups = [ "wheel" "audio" "video" "render" ]; # Enable ‘sudo’ for the user.
+    shell = pkgs.zsh;
    # packages = with pkgs; [
    #   firefox
    #   tree
@@ -118,11 +124,18 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    #fish
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
     git
     pciutils
+    openssl
     xdg-utils
+    # some network tools like ping, telnet
+    inetutils
+    # for paste, copy tool
+    lemonade
+    wl-clipboard-rs
     zoxide
     fzf
     tree
@@ -130,11 +143,15 @@
     zellij
     screen
     #brightnessctl
+    bluez
+    swaybg
   ];
   
   # 将 vim 设为默认编辑器
   environment.variables.EDITOR = "vim";
- 
+  
+  # enable zsh to get completion for system packages
+  environment.pathsToLink = [ "/share/zsh" ];
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
@@ -144,6 +161,11 @@
   # };
   programs.nix-ld.enable = true;
 
+  #programs.fish.enable = true;
+
+  programs.zsh = {
+    enable = true;
+  };
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
@@ -195,10 +217,10 @@
   # system.copySystemConfiguration = true;
 
   # dns over https
-  networking.resolvconf.useLocalResolver = true;
+  networking.resolvconf.useLocalResolver = false;
 
   services.sing-box = {
-    enable = true;
+    enable = false;
     package = inputs.nixpkgs-unstable.sing-box;
     settings = {
       experimental = {
@@ -209,30 +231,34 @@
     };
   };
   
-  services.dnscrypt-proxy2 = {
-    enable = true;
-    settings = {
-      ipv6_servers = true;
-      require_dnssec = false;
+  #services.dnscrypt-proxy2 = {
+  #  enable = false;
+  #  settings = {
+  #    ipv6_servers = true;
+  #    require_dnssec = false;
 
-      sources.public-resolvers = {
-        urls = [
-          "https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/public-resolvers.md"
-          "https://download.dnscrypt.info/resolvers-list/v3/public-resolvers.md"
-        ];
-        cache_file = "/var/lib/dnscrypt-proxy2/public-resolvers.md";
-        minisign_key = "RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3";
-      };
+  #    sources.public-resolvers = {
+  #      urls = [
+  #        "https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/public-resolvers.md"
+  #        "https://download.dnscrypt.info/resolvers-list/v3/public-resolvers.md"
+  #      ];
+  #      cache_file = "/var/lib/dnscrypt-proxy2/public-resolvers.md";
+  #      minisign_key = "RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3";
+  #    };
 
-      bootstrap_resolvers = [ "223.5.5.5:53" "8.8.8.8:53" ];
-      # You can choose a specific set of servers from https://github.com/DNSCrypt/dnscrypt-resolvers/blob/master/v3/public-resolvers.md
-      # server_names = [ ... ];
-    };
-  };
+  #    bootstrap_resolvers = [ "223.5.5.5:53" "8.8.8.8:53" ];
+  #    # You can choose a specific set of servers from https://github.com/DNSCrypt/dnscrypt-resolvers/blob/master/v3/public-resolvers.md
+  #    server_names = [
+  #      "alidns-doh"
+  #      "dnscry.pt-seoul-ipv4"
+  #      "dnscry.pt-flint-ipv4"
+  #    ];
+  #  };
+  #};
 
-  systemd.services.dnscrypt-proxy2.serviceConfig = {
-    StateDirectory = "dnscrypt-proxy";
-  };
+  #systemd.services.dnscrypt-proxy2.serviceConfig = {
+  #  StateDirectory = "dnscrypt-proxy";
+  #};
 
   #systemd.services.sing-box = {
   #  documentation = "https://sing-box.sagrenet.org";
