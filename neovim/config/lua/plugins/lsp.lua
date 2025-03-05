@@ -20,6 +20,8 @@ elseif file_ext == "go" then
 elseif file_ext == "js" then
   -- table.insert(should_installed_lsp, "biome")
   table.insert(should_installed_lsp, "tsserver")
+elseif file_ext == "rs" then
+  table.insert(should_installed_lsp, "rust_analyzer")
 end
 vim.notify("lsp should installed:"..table.concat(should_installed_lsp, " "))
 
@@ -125,6 +127,14 @@ lspconfig.gopls.setup {
 
 lspconfig.tsserver.setup{
   -- capabilities = require("plugins.my").capabilities,
+  capabilities = capabilities,
+}
+
+lspconfig.rust_analyzer.setup {
+  capabilities = capabilities,
+}
+
+lspconfig.svelte.setup {
   capabilities = capabilities,
 }
 

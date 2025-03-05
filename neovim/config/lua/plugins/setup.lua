@@ -39,6 +39,7 @@ local plugins = {
   "L3MON4D3/LuaSnip", -- Snippet Engine
   "lewis6991/gitsigns.nvim", -- display git hunks in side panel
   "zbirenbaum/copilot.lua",
+  { import = "plugins.avante"},
 }
 
 require("lazy").setup({
