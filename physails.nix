@@ -89,7 +89,7 @@
       };
       window = {
         blur = true;
-        opacity = 0.7;
+        opacity = 0.9;
       };
       terminal = {
         osc52 = "CopyPaste";
@@ -103,7 +103,18 @@
     autosuggestion = {
       enable = true;
     };
-    enableCompletion = true;
+    enableCompletion = false;
+    plugins = [
+      {
+        name = "zsh-autocomplete";
+        src = pkgs.fetchFromGitHub {
+          owner = "marlonrichert";
+          repo = "zsh-autocomplete";
+          rev = "24.09.04";
+          sha256 = "sha256-o8IQszQ4/PLX1FlUvJpowR2Tev59N8lI20VymZ+Hp4w=";
+        };
+      }
+    ];
   };
 
   #home.file.".config/hypr/hyprland.conf".source = ./hyprland/hyprland.conf;
