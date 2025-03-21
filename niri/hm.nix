@@ -5,7 +5,16 @@
     swaylock-effects
     rustdesk-flutter
     inputs.zen-browser.packages."${system}".default
+    inputs.ayugram-desktop.packages.${system}.ayugram-desktop
   ];
+
+  services.flameshot = {
+    enable = true;
+    package = (pkgs.flameshot.override { enableWlrSupport = true; });
+    settings.General = {
+      showStartupLaunchMessage = false;
+    };
+  };
 
   programs.fuzzel = {
     enable = true;
@@ -49,7 +58,8 @@
   };
 
   #programs.google-chrome = {
-  programs.chromium = {
+  #programs.chromium = {
+  programs.vivaldi = {
     enable = true;
 
     # https://wiki.archlinux.org/title/Chromium#Native_Wayland_support

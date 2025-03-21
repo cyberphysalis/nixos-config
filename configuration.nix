@@ -24,11 +24,16 @@
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nix.settings.substituters = [ 
     "https://mirrors.ustc.edu.cn/nix-channels/store"
-    "https://mirror.sjtu.edu.cn/nix-channels/store"
+    "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
+#    "https://mirror.sjtu.edu.cn/nix-channels/store"
     "https://hyprland.cachix.org"
+    "https://cache.garnix.io"
     # "https://cache.nixos.org"
   ];
-  nix.settings.trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
+  nix.settings.trusted-public-keys = [
+    "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+    "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
+  ];
 
   networking.hostName = "wang-nix"; # Define your hostname.
   # Pick only one of the below networking options.
@@ -140,11 +145,13 @@
     fzf
     tree
     neofetch
-    zellij
+    tmux
     screen
     #brightnessctl
     bluez
     swaybg
+    # screenshot
+    satty
   ];
   
   # 将 vim 设为默认编辑器

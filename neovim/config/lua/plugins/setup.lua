@@ -27,6 +27,7 @@ local plugins = {
   -- tree-sitter
   -- `:TSUpdate` option ensures all the installed parsers are updated before itself upgrading
   { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
+  { import = "plugins.flash" },
   -- LSP 
   {
     "williamboman/mason.nvim",

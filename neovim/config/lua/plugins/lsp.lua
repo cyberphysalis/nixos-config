@@ -1,6 +1,3 @@
-
-
-
 require("mason").setup({
   ui = {
     icons = {
@@ -19,7 +16,7 @@ elseif file_ext == "go" then
   table.insert(should_installed_lsp, "gopls")
 elseif file_ext == "js" then
   -- table.insert(should_installed_lsp, "biome")
-  table.insert(should_installed_lsp, "tsserver")
+  table.insert(should_installed_lsp, "ts_ls")
 elseif file_ext == "rs" then
   table.insert(should_installed_lsp, "rust_analyzer")
 end
@@ -125,7 +122,7 @@ lspconfig.gopls.setup {
   capabilities = capabilities,
 }
 
-lspconfig.tsserver.setup{
+lspconfig.ts_ls.setup{
   -- capabilities = require("plugins.my").capabilities,
   capabilities = capabilities,
 }
@@ -133,6 +130,19 @@ lspconfig.tsserver.setup{
 lspconfig.rust_analyzer.setup {
   capabilities = capabilities,
 }
+
+-- workaround for rust-analyzer server cancelled request
+-- https://github.com/neovim/neovim/issues/30985
+for _, method in ipairs { 'textDocument/diagnostic', 'workspace/diagnostic' } do
+  local default_diagnostic_handler = vim.lsp.handlers[method]
+  vim.lsp.handlers[method] = function(err, result, context, config)
+    if err ~= nil and err.code == -32802 then
+      return
+    end
+    return default_diagnostic_handler(err, result, context, config)
+  end
+end
+
 
 lspconfig.svelte.setup {
   capabilities = capabilities,

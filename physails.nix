@@ -33,6 +33,7 @@
     # color code
     # https://upload.wikimedia.org/wikipedia/commons/1/15/Xterm_256color_chart.svg
     extraConfig = ''
+      set nu
       set relativenumber
       set tabstop=2
       set shiftwidth=2
@@ -40,9 +41,15 @@
       syntax on
       colorscheme default
       set list
+      " highlight cursor line
       set cursorline
       hi CursorLineNr   cterm=NONE ctermbg=None ctermfg=None
       hi CursorLine     cterm=NONE ctermbg=243 ctermfg=white
+      " auto jump to last editing line when open 
+      if has("autocmd")
+        au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
+        \| exe "normal! g'\"" | endif
+      endif
     '';
   };
 
@@ -101,7 +108,7 @@
     enable = true;
     autocd = true;
     autosuggestion = {
-      enable = true;
+      enable = false;
     };
     enableCompletion = false;
     plugins = [
@@ -114,9 +121,68 @@
           sha256 = "sha256-o8IQszQ4/PLX1FlUvJpowR2Tev59N8lI20VymZ+Hp4w=";
         };
       }
+      #{
+      #  name = "vi-mode";
+      #  src = pkgs.zsh-vi-mode;
+      #  file = "share/zsh-vi-mode/zsh-vi-mode.plugin.zsh";
+      #}
     ];
+    initExtra = ''
+      function zvm_config() {
+        ZVM_LINE_INIT_MODE=$ZVM_MODE_LAST
+        ZVM_KEYTIMEOUT=0.1
+        ZVM_READKEY_ENGINE=$ZVM_READKEY_ENGINE_ZLE
+      }
+      source ${pkgs.zsh-vi-mode}/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
+     
+      # Make Tab and ShiftTab go to the menu
+      bindkey              '^I' menu-select
+      bindkey "$terminfo[kcbt]" menu-select
+      # Make Tab and ShiftTab change the selection in the menu
+      bindkey -M menuselect              '^I'         menu-complete
+      bindkey -M menuselect "$terminfo[kcbt]" reverse-menu-complete
+
+      source <(zoxide init --cmd cd zsh)
+      eval "$(fzf --zsh)"
+    '';
   };
 
+
+  programs.tmux = {
+   enable = true;
+   extraConfig = ''
+     unbind C-a
+     set  -g prefix C-a
+     bind C-a send-prefix
+     # panel and window numbering base 1
+     set  -g base-index 1
+     setw -g pane-base-index 1
+     # when delete one window, renumber window index
+     set  -g renumber-windows on
+     set  -g aggressive-resize on
+     set  -g mouse on
+     set  -g clock-mode-style 24
+     set  -gw window-status-current-style fg=white
+     bind -T prefix Enter new-window
+     bind -N "Select pane to the left of the active pane" h select-pane -L
+     bind -N "Select pane below the active pane" j select-pane -D
+     bind -N "Select pane above the active pane" k select-pane -U
+     bind -N "Select pane to the right of the active pane" l select-pane -R
+     bind-key -T prefix b last-window
+
+     bind -N "Rename current window" r command-prompt -I "#W" "rename-window '%%'"
+     set -g mode-keys vi
+     set -s copy-command 'wl-copy -p'
+     set -s set-clipborad on
+     unbind -T copy-mode-vi Enter
+     bind -T copy-mode-vi q send-keys -X cancel
+     bind -T copy-mode-vi Escape send-keys -X clear-selection
+     bind -T copy-mode-vi v send-keys -X begin-selection
+     bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel
+     bind -T copy-mode-vi MouseDrag1Pane select-pane \; send-keys -X begin-selection
+     bind -T copy-mode-vi MouseDragEnd1Pane copy-pipe
+   '';
+  };
   #home.file.".config/hypr/hyprland.conf".source = ./hyprland/hyprland.conf;
   
  # wayland.windowManager.hyprland = {

@@ -30,7 +30,7 @@
 
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
-      inputs.nixpkgs.follows = "nixpkgs"; 
+      # inputs.nixpkgs.follows = "nixpkgs"; 
     };
 
     nur = {
@@ -42,6 +42,13 @@
       url = "github:danth/stylix";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
+    };
+
+    ayugram-desktop = {
+      type = "git";
+      submodules = true;
+      url = "https://github.com/ndfined-crp/ayugram-desktop/";
+      # inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
     physails-secrets = {
@@ -66,6 +73,7 @@
     niri = inputs.niri;
     zen-browser = inputs.zen-browser;
     nur = inputs.nur;
+    ayugram-desktop = inputs.ayugram-desktop;
   in
   {
     # nixosConfigurations 即 NixOS 的系统配置文件，这是当前 flake 的输出
@@ -73,7 +81,7 @@
     nixosConfigurations.wang-nix = nixpkgs.lib.nixosSystem {
       inherit system;
 
-      specialArgs = { inherit nixpkgs-unstable hyprland-pkgs physails-secrets niri zen-browser nur; };
+      specialArgs = { inherit nixpkgs-unstable hyprland-pkgs physails-secrets niri zen-browser nur ayugram-desktop; };
       modules = [
         # 这里导入之前我们使用的 configuration.nix，
         # 这样旧的配置文件仍然能生效
@@ -100,7 +108,7 @@
           # arguments to home.nix
           home-manager.extraSpecialArgs = {
             #inherit (inputs) hyprland-pkgs nixpkgs-unstable;
-            inherit hyprland-pkgs nixpkgs-unstable zen-browser nur physails-secrets;
+            inherit hyprland-pkgs nixpkgs-unstable zen-browser nur physails-secrets ayugram-desktop;
           };
         }
       ];
