@@ -44,7 +44,7 @@
       " highlight cursor line
       set cursorline
       hi CursorLineNr   cterm=NONE ctermbg=None ctermfg=None
-      hi CursorLine     cterm=NONE ctermbg=243 ctermfg=white
+      hi CursorLine     cterm=NONE ctermbg=237 ctermfg=None
       " auto jump to last editing line when open 
       if has("autocmd")
         au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
@@ -159,6 +159,13 @@
      setw -g pane-base-index 1
      # when delete one window, renumber window index
      set  -g renumber-windows on
+
+     # # https://old.reddit.com/r/tmux/comments/mesrci/tmux_2_doesnt_seem_to_use_256_colors/
+     set -g default-terminal "xterm-256color"
+     set -ga terminal-overrides ",*256col*:Tc"
+     set -ga terminal-overrides '*:Ss=\E[%p1%d q:Se=\E[ q'
+     set-environment -g COLORTERM "truecolor"
+
      set  -g aggressive-resize on
      set  -g mouse on
      set  -g clock-mode-style 24
@@ -173,14 +180,15 @@
      bind -N "Rename current window" r command-prompt -I "#W" "rename-window '%%'"
      set -g mode-keys vi
      set -s copy-command 'wl-copy -p'
-     set -s set-clipborad on
+     set -s set-clipboard on
      unbind -T copy-mode-vi Enter
+     # https://github.com/tmux/tmux/commit/76d6d3641f271be1756e41494960d96714e7ee58
      bind -T copy-mode-vi q send-keys -X cancel
      bind -T copy-mode-vi Escape send-keys -X clear-selection
      bind -T copy-mode-vi v send-keys -X begin-selection
      bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel
      bind -T copy-mode-vi MouseDrag1Pane select-pane \; send-keys -X begin-selection
-     bind -T copy-mode-vi MouseDragEnd1Pane copy-pipe
+     bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe
    '';
   };
   #home.file.".config/hypr/hyprland.conf".source = ./hyprland/hyprland.conf;
