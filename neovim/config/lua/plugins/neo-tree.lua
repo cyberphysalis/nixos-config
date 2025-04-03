@@ -7,11 +7,27 @@ return  {
     "MunifTanjim/nui.nvim",
     -- "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
   },
+  ---@module "neo-tree"
+  ---@type neotree.Config
   opts = function (_, _)
     local fc = require("neo-tree.sources.filesystem.commands")
     return {
-      window = { position = "float" },
+      source_selector = {
+        winbar = true,
+        statusline = false,
+      },
+      buffers = {
+        follow_current_file = {
+          enabled = true,
+          leave_dirs_open = true,
+        },
+      },
+      window = { position = "left" },
       filesystem = {
+        follow_current_file = {
+          enabled = true,
+          leave_dirs_open = true,
+        },
         window = {
           -- :h neo-tree-custom-mappings
           mappings = {

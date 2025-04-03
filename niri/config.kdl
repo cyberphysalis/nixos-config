@@ -98,7 +98,10 @@ input {
 
 environment {
     QT_QPA_PLATFORM "wayland-egl"
+    QT_IM_MODULE "fcitx5"
+    // QT_IM_MODULES "wayland;fcitx;bus"
     DISPLAY null
+
 }
 // Settings that influence how windows are positioned and sized.
 // Find more information on the wiki:
@@ -263,6 +266,7 @@ window-rule {
     // - host Firefox (app-id is "firefox")
     // - Flatpak Firefox (app-id is "org.mozilla.firefox")
     match app-id=r#"firefox$"# title="^Picture-in-Picture$"
+    match app-id=r#"^zen$"# title="^Picture-in-Picture$"
     open-floating true
 }
 

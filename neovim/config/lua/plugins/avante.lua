@@ -2,17 +2,26 @@ return  {
   "yetone/avante.nvim",
   event = "VeryLazy",
   lazy = false,
-  version = false, -- Set this to "*" to always pull the latest release version, or set it to false to update to the latest code changes.
+  version = "*", -- Set this to "*" to always pull the latest release version, or set it to false to update to the latest code changes.
   opts = {
     -- add any opts here
     -- for example
-    provider = "openai",
-    openai = {
-      endpoint = "https://api.ppinfra.com/v3/openai",
-      model = "deepseek/deepseek-r1/community", -- your desired model (or use gpt-4o, etc.)
+    provider = "openrouter",
+    vendors = {
+        ---@type AvanteProvider
+        openrouter = {
+          __inherited_from = 'openai',
+          endpoint = 'https://openrouter.ai/api/v1',
+          api_key_name = 'OPENROUTER_API_KEY',
+          model = 'anthropic/claude-3.7-sonnet',
+        },
+    },
+    claude = {
+      endpoint = "https://openrouter.ai/api/v1",
+      model = "", -- your desired model (or use gpt-4o, etc.)
       timeout = 30000, -- timeout in milliseconds
       temperature = 0, -- adjust if needed
-      max_tokens = 4096,
+      max_tokens = 8096,
       -- reasoning_effort = "high" -- only supported for reasoning models (o1, etc.)
     },
   },

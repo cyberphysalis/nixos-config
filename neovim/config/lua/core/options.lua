@@ -20,7 +20,7 @@ opt.wrap = true
 opt.cursorline = true
 
 -- 系统剪切板
--- opt.clipboard:append("unnamedplus")
+opt.clipboard:append("unnamedplus")
 
 opt.foldmethod = "expr"
 opt.foldexpr = "nvim_treesitter#foldexpr()"

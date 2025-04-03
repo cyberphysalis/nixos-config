@@ -44,6 +44,7 @@
         })
         # fcitx5-mozc    # japanese input method
         fcitx5-gtk # gtk im module
+        kdePackages.fcitx5-qt # qt library
         #fcitx5-pinyin-zhwiki
       ];
       # 因为前面忽略了用户空间配置，这里要提前配置好默认项

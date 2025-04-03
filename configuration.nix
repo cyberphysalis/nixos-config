@@ -71,11 +71,14 @@
     # FC_DEBUG=1 fc-match 'serif'
     enableDefaultPackages = true;
     packages = with pkgs; [
-      maple-mono-SC-NF
-      noto-fonts-emoji
+      #maple-mono-SC-NF
+      #noto-fonts-emoji
+      noto-fonts-color-emoji
+      noto-fonts
       font-awesome
       wqy_zenhei
       wqy_microhei
+      fira
 #      source-sans
 #      source-serif
 #      source-han-sans
@@ -86,11 +89,14 @@
         "JetBrainsMono"
         "Iosevka"
       ];})
+    ] ++ [
+      inputs.nixpkgs-unstable.maple-mono.CN
+      inputs.nixpkgs-unstable.maple-mono.Normal-TTF
     ];
     fontconfig.defaultFonts = {
-      serif = [ "WenQuanYi Micro Hei" ];
-      sansSerif = [ "WenQuanYi Micro Hei" ];
-      monospace = [ "WenQuanYi Micro Hei Mono" ];
+      serif = [ "WenQuanYi Micro Hei" "Noto Color Emoji"];
+      sansSerif = [ "WenQuanYi Micro Hei" "Noto Color Emoji"];
+      monospace = [ "WenQuanYi Micro Hei Mono" "Noto Color Emoji"];
       #serif = [ "Maple Mono SC NF" "Font Awesome 6 Free" "Noto Color Emoji" "Source Han Serif SC" ];
       #sansSerif = [ "Maple Mono SC NF" "Font Awesome 6 Free" "Noto Color Emoji" "Source Han Sans SC" ];
       #monospace = [ "Maple Mono SC NF" "JetBrainsMono Nerd Font" "Font Awesome 6 Free" "Noto Color Emoji" ];

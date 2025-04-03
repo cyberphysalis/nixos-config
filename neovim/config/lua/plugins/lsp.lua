@@ -58,20 +58,20 @@ cmp.setup {
         fallback()
       end
     end, { 'i' }),
---    ['<CR>'] = cmp.mapping.confirm({ select = true, behavior = cmp.ConfirmBehavior.Insert, }),
-    ['<CR>'] = cmp.mapping(function(fallback)
-        if cmp.visible() then
-            if luasnip.expandable() then
-                luasnip.expand()
-            else
-                cmp.confirm({
-                    select = true,
-                })
-            end
-        else
-            fallback()
-        end
-    end),
+    ['<CR>'] = cmp.mapping.confirm({ select = true, behavior = cmp.ConfirmBehavior.Replace, }),
+--     ['<CR>'] = cmp.mapping(function(fallback)
+--         if cmp.visible() then
+--             if luasnip.expandable() then
+--                 luasnip.expand()
+--             else
+--                 cmp.confirm({
+--                     select = true,
+--                 })
+--             end
+--         else
+--             fallback()
+--         end
+--     end),
     ['<C-e>'] = cmp.mapping.abort(),  -- 取消补全，esc也可以退出
   },
 }

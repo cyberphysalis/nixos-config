@@ -58,7 +58,7 @@
     userName = "cyberphysails";
     userEmail = "physqils@outlook.com";
     extraConfig = {
-      http."https://github.com".proxy = "socks5://192.168.66.11:7890";
+      http."https://github.com".proxy = "socks5://192.168.66.12:2080";
     };
   };
 
@@ -89,7 +89,8 @@
       selection = { save_to_clipboard = true; };
       font = {
         normal = {
-          family = "Maple Mono SC NF";
+          # family = "Maple Mono SC NF";
+          family = "Maple Mono CN";
           style = "Regular";
         };
         size = 12;
@@ -159,6 +160,8 @@
      setw -g pane-base-index 1
      # when delete one window, renumber window index
      set  -g renumber-windows on
+
+     set-environment -g WAYLAND_DISPLAY "wayland-1"
 
      # # https://old.reddit.com/r/tmux/comments/mesrci/tmux_2_doesnt_seem_to_use_256_colors/
      set -g default-terminal "xterm-256color"

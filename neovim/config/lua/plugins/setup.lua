@@ -38,9 +38,13 @@ local plugins = {
   -- plugin name: nvim-lsp
   "hrsh7th/cmp-nvim-lsp", -- nvim-cmp source for neovim's built-in language server client.
   "L3MON4D3/LuaSnip", -- Snippet Engine
+  -- https://git.sr.ht/~whynothugo/lsp_lines.nvim 
+  { url = "https://git.sr.ht/~whynothugo/lsp_lines.nvim", name = "lsp_lines" , config = true },
   "lewis6991/gitsigns.nvim", -- display git hunks in side panel
   "zbirenbaum/copilot.lua",
   { import = "plugins.avante"},
+  { import = "plugins.term" },
+  { import = "plugins.outline" },
 }
 
 require("lazy").setup({
