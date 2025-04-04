@@ -45,6 +45,8 @@ local plugins = {
   { import = "plugins.avante"},
   { import = "plugins.term" },
   { import = "plugins.outline" },
+  { "j-hui/fidget.nvim", opts = { }, },
+  { 'numToStr/Comment.nvim', opts = { }, },
 }
 
 require("lazy").setup({

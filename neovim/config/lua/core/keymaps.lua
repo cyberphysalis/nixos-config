@@ -16,6 +16,15 @@ keymap.set("n", "gr", vim.lsp.buf.references)
 vim.diagnostic.config({
   virtual_text = false,
   virtual_lines = true,
+  -- { error = ' ', warn = ' ', info = ' ' }
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = '',
+      [vim.diagnostic.severity.WARN] = '',
+      [vim.diagnostic.severity.INFO] = '',
+      [vim.diagnostic.severity.HINT] = '󰌵',
+    },
+  },
 })
 keymap.set("n", "<leader>l", require("lsp_lines").toggle)
 keymap.set("n", "<leader>p", function () vim.diagnostic.goto_prev({float = false}) end)
