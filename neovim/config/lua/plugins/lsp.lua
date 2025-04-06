@@ -16,7 +16,7 @@ elseif file_ext == "go" then
   table.insert(should_installed_lsp, "gopls")
 elseif file_ext == "js" then
   -- table.insert(should_installed_lsp, "biome")
-  table.insert(should_installed_lsp, "ts_ls")
+  table.insert(should_installed_lsp, "tsserver")
 elseif file_ext == "rs" then
   table.insert(should_installed_lsp, "rust_analyzer")
 end
@@ -122,7 +122,7 @@ lspconfig.gopls.setup {
   capabilities = capabilities,
 }
 
-lspconfig.ts_ls.setup{
+lspconfig.tsserver.setup{
   -- capabilities = require("plugins.my").capabilities,
   capabilities = capabilities,
 }
