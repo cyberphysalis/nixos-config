@@ -270,6 +270,15 @@ window-rule {
     open-floating true
 }
 
+// Open telegram or ayugram media-viewer as floating
+window-rule {
+    // This app-id regular expression will work for both:
+    // - host Firefox (app-id is "firefox")
+    // - Flatpak Firefox (app-id is "org.mozilla.firefox")
+    match app-id=r#"com\.ayugram\.desktop$"# title="^Media viewer$"
+    open-floating true
+}
+
 // Example: block out two password managers from screen capture.
 // (This example rule is commented out with a "/-" in front.)
 /-window-rule {
