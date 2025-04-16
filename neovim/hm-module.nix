@@ -1,7 +1,8 @@
-{ pkgs, config, ... }:
+{ pkgs, config, ... }@inputs:
 
 {
   programs.neovim = {
+    package = inputs.nixpkgs-unstable.neovim-unwrapped;
     enable = true;
   };
 
