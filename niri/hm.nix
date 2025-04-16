@@ -5,7 +5,8 @@
     swaylock-effects
     rustdesk-flutter
     inputs.zen-browser.packages."${system}".default
-    inputs.ayugram-desktop.packages.${system}.ayugram-desktop
+    inputs.nixpkgs-unstable.ayugram-desktop
+    #inputs.ayugram-desktop.packages.${system}.ayugram-desktop
   ];
 
   services.flameshot = {
