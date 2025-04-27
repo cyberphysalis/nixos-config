@@ -102,6 +102,7 @@
 #            ./hyprland/hm.nix
             ./niri/hm.nix
             ./neovim/hm-module.nix
+            ./emacs/hm-module.nix
           ];
 
           # Optionally, use home-manager.extraSpecialArgs to pass
