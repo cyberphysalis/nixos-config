@@ -38,20 +38,92 @@
 (use-package color-theme-sanityinc-tomorrow
    :ensure t
    :config
-   (load-theme 'sanityinc-tomorrow-night))
-		       
-	     
+   (load-theme 'sanityinc-tomorrow-day))
+
+(use-package pixel-scroll
+  :bind
+  ([remap scroll-up-command]   . pixel-scroll-interpolate-down)
+  ([remap scroll-down-command] . pixel-scroll-interpolate-up)
+  
+  :custom
+  (pixel-scroll-precision-interpolate-page t)
+  :init
+  (pixel-scroll-precision-mode 1))
+
+(use-package corfu
+  :ensure t
+  :custom
+  (corfu-cycle t)           ;; Enable cycling for `corfu-next/previous'
+  (corfu-preselect 'prompt) ;; Always preselect the prompt
+
+  ;; Use TAB for cycling, default is `corfu-complete'.
+  :bind
+  (:map corfu-map
+        ("TAB" . corfu-next)
+        ([tab] . corfu-next)
+        ("S-TAB" . corfu-previous)
+        ([backtab] . corfu-previous))
+  
+
+
+  :config
+  ;; "RET" key default will complete completion, free the "RET" key
+  (keymap-unset corfu-map "RET")
+  ;; 确保 TAB 用来触发补全，而不是只确认
+  ;;  (global-set-key (kbd "TAB") #'completion-at-point)
+  ;;  (global-set-key (kbd "<tab>") #'completion-at-point)
+  
+  :init
+  (global-corfu-mode))
+
+(use-package vertico
+  :init
+  (vertico-mode))
+
 (use-package org-roam
    :ensure t
    :init
    (setq org-roam-v2-ack t)
    :custom
-   (org-roam-directory "~/RoamNotes")
+   (org-roam-directory "~/RoamNotes/data")
    (org-roam-completion-everywhere t)
    :bind (("C-c n l" . org-roam-buffer-toggle)
-   ("C-c n f" . org-roam-node-find)
-   ("C-c n i" . org-roam-node-insert)
-   :map org-mode-map
-   ("C-M-i"   . completion-at-point))
+          ("C-c n f" . org-roam-node-find)
+          ("C-c n i" . org-roam-node-insert)
+          :map org-mode-map
+          ("C-M-i"   . completion-at-point)
+          :map org-roam-dailies-map
+          ("Y" . org-roam-dailes-capture-yesterday)
+          ("T" . org-roam-dailes-capture-tomorrow))
+   :bind-keymap
+   ("C-c n d" . org-roam-dailies-map)
    :config
-   (org-roam-setup))
+   (add-hook 'org-mode-hook 'visual-line-mode)
+   (require 'org-roam-dailies)
+   (setq org-roam-dailies-directory "journal/")
+   (org-roam-db-autosync-mode))
+   
+
+(use-package emacs
+  :custom
+  (tab-always-indent 'complete))
+
+;; 设置默认字体和大小
+(set-face-attribute 'default nil
+                    :family "JetBrainsMonoNL Nerd Font"
+                    :height 110)  ;; 注意，这里 height 是字号*10，比如 11号字就是 110
+(setq org-hide-emphasis-markers t)
+
+  (font-lock-add-keywords 'org-mode
+                          '(("^ *\\([-]\\) "
+                             (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+
+(setq auto-save-file-name-transforms
+          `((".*" ,(concat user-emacs-directory "auto-save/") t)))
+(setq backup-directory-alist
+      `(("." . ,(expand-file-name
+                 (concat user-emacs-directory "backups")))))
+;; set tab to 4 spaces
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 4)
+(setq indent-line-function 'insert-tab)
