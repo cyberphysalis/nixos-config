@@ -23,9 +23,11 @@
     '';
   };
 
-  home.packages = with pkgs; [
+  home.packages = (with pkgs; [
     unzipNLS
-  ];
+  ]) ++ (with inputs.nixpkgs-unstable; [
+    lazygit
+  ]);
 
   programs.vim = {
     enable = true;
@@ -61,6 +63,7 @@
       http."https://github.com".proxy = "socks5://192.168.66.12:2080";
     };
   };
+
 
   programs.ssh = {
     enable = true;
@@ -148,6 +151,11 @@
     '';
   };
 
+  programs.direnv = {
+      enable = true;
+      enableZshIntegration = true; # see note on other shells below
+      nix-direnv.enable = true;
+  };
 
   programs.tmux = {
    enable = true;

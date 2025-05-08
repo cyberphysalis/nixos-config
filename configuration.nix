@@ -234,6 +234,29 @@
   # dns over https
   networking.resolvconf.useLocalResolver = false;
 
+  services.kmonad = {
+   enable = false;
+     keyboards = {
+       myKMonadOutput = {
+         device = "/dev/input/by-id/usb-5000_Bluetooth_Keyboard-event-kbd";
+         config = builtins.readFile ./kmonad.kbd;
+       };
+     };
+  };
+
+  services.kanata = {
+   enable = true;
+     keyboards = {
+       myKanataOutput = {
+         devices = [ "/dev/input/by-id/usb-5000_Bluetooth_Keyboard-event-kbd" ];
+         extraDefCfg = ''
+           process-unmapped-keys yes
+         '';
+         config = builtins.readFile ./kanata.kbd;
+       };
+     };
+  };
+
   services.sing-box = {
     enable = false;
     package = inputs.nixpkgs-unstable.sing-box;

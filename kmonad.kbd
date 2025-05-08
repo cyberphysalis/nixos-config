@@ -1,0 +1,56 @@
+(defcfg
+  input  (device-file "/dev/input/by-id/usb-5000_Bluetooth_Keyboard-event-kbd")
+  output (uinput-sink "MyKMonadOutput")
+
+  ;; This option tells KMonad to let non-configured keys act normal
+  fallthrough true
+)
+
+;; 物理键盘布局定义（严格按你的键盘顺序写）
+(defsrc
+  caps a  s  d  f  g  h  j  k  l  ;
+  lsft z x c v b n m , . / rsft
+  lctl lmet lalt spc ralt fn menu rctl
+)
+
+;; 修饰键按下时启用的层，禁用 home row mods（恢复原始字符）
+(deflayer homerowdisable
+  caps a  s  d  f  g  h  j  k  l  ;
+  lsft z  x  c  v  b  n  m  ,  .  /  rsft
+  lctl lmet lalt spc ralt fn menu rctl
+)
+
+;; home row mods（tap-hold）设置（使用更高级的 tap-hold-next-release）
+(defalias
+  met_a (tap-hold-next-release 200 a lmet)
+  alt_s (tap-hold-next-release 200 s lalt)
+  sft_d (tap-hold-next-release 200 d lsft)
+  ctl_f (tap-hold-next-release 200 f lctl)
+
+  ctl_j (tap-hold-next-release 200 j rctl)
+  sft_k (tap-hold-next-release 200 k rsft)
+  alt_l (tap-hold-next-release 200 l lalt)
+  met_; (tap-hold-next-release 200 ; rmet)
+)
+
+;; 修饰键按下时切换到普通 layer（禁用 HRM）
+(defalias
+  mod-lctl (layer-switch homerowdisable)
+  mod-lsft (layer-switch homerowdisable)
+  mod-lalt (layer-switch homerowdisable)
+  mod-lmet (layer-switch homerowdisable)
+  mod-rctl (layer-switch homerowdisable)
+  mod-rsft (layer-switch homerowdisable)
+  mod-rmet (layer-switch homerowdisable)
+)
+
+;; 主逻辑层，绑定 Home row mods
+(deflayer base
+  caps @met_a   @alt_s   @sft_d   @ctl_f   g   h   @ctl_j   @sft_k   @alt_l   @met_;
+  @mod-lsft z x c v b n m , . / @mod-rsft
+  @mod-lctl @mod-lmet @mod-lalt spc ralt fn menu @mod-rctl
+)
+
+
+
+
