@@ -1,12 +1,25 @@
 { pkgs, config, ... }@inputs:
 
+let
+  vscode-modified = pkgs.vscode.overrideAttrs (oldAttrs: {
+    nativeBuildInputs = (oldAttrs.nativeBuildInputs or []) ++ [ pkgs.makeWrapper ];
+    postInstall = (oldAttrs.postInstall or "")  + ''
+      mv $out/bin/code $out/bin/code-original
+      makeWrapper $out/bin/code-original $out/bin/code \
+        --add-flags "--disable-gpu"
+    '';
+  });
+in
 {
   home.packages = with pkgs; [
     swaylock-effects
     rustdesk-flutter
     inputs.zen-browser.packages."${system}".default
     inputs.nixpkgs-unstable.ayugram-desktop
+    spotify
     #inputs.ayugram-desktop.packages.${system}.ayugram-desktop
+    vscode-modified.fhs
+    spotify
   ];
 
   services.flameshot = {

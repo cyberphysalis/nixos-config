@@ -27,6 +27,7 @@
     unzipNLS
   ]) ++ (with inputs.nixpkgs-unstable; [
     lazygit
+    aider-chat-with-browser
   ]);
 
   programs.vim = {
@@ -131,7 +132,7 @@
       #  file = "share/zsh-vi-mode/zsh-vi-mode.plugin.zsh";
       #}
     ];
-    initExtra = ''
+    initContent = ''
       function zvm_config() {
         ZVM_LINE_INIT_MODE=$ZVM_MODE_LAST
         ZVM_KEYTIMEOUT=0.1

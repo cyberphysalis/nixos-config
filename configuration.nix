@@ -85,12 +85,14 @@
 #      source-serif
 #      source-han-sans
 #      source-han-serif
-
-      (nerdfonts.override { fonts = [
-        "NerdFontsSymbolsOnly"
-        "JetBrainsMono"
-        "Iosevka"
-      ];})
+      nerd-fonts.symbols-only
+      nerd-fonts.jetbrains-mono
+      nerd-fonts.iosevka
+    #(nerdfonts.override { fonts = [
+    #    "NerdFontsSymbolsOnly"
+    #    "JetBrainsMono"
+    #    "Iosevka"
+    #  ];})
     ] ++ [
       inputs.nixpkgs-unstable.maple-mono.CN
       inputs.nixpkgs-unstable.maple-mono.Normal-TTF
@@ -134,6 +136,7 @@
    # ];
   };
 
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
