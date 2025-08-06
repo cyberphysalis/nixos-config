@@ -9,6 +9,7 @@ echo "install overlay to: ${INSTALL_DIR}"
 TARGET_OVERLAY_DIR_PATH="${OVERLAYS_DIR}/${1}"
 if [[ -d "${TARGET_OVERLAY_DIR_PATH}" ]];then
   mkdir -p ${INSTALL_DIR}
+  rm -rf ${INSTALL_DIR}/${1}/*
   cp -rf ${TARGET_OVERLAY_DIR_PATH} "${INSTALL_DIR}/"
   echo "install success! use by '(import .flake/${1})'"
   exit 0;
