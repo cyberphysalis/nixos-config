@@ -25,6 +25,7 @@
 
   home.packages = (with pkgs; [
     unzipNLS
+    (writeShellScriptBin "install-overlays" (builtins.readFile ./overlays/install-overlays.sh))
   ]) ++ (with inputs.nixpkgs-unstable; [
     lazygit
     aider-chat-with-browser
@@ -138,7 +139,12 @@
         ZVM_KEYTIMEOUT=0.1
         ZVM_READKEY_ENGINE=$ZVM_READKEY_ENGINE_ZLE
       }
+      function zvm_after_init() {
+        eval "$(fzf --zsh)"
+        eval "$(atuin init zsh --disable-up-arrow)"
+      }
       source ${pkgs.zsh-vi-mode}/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
+      source ${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh
      
       # Make Tab and ShiftTab go to the menu
       bindkey              '^I' menu-select
@@ -148,13 +154,12 @@
       bindkey -M menuselect "$terminfo[kcbt]" reverse-menu-complete
 
       source <(zoxide init --cmd cd zsh)
-      eval "$(fzf --zsh)"
     '';
   };
 
   programs.direnv = {
       enable = true;
-      enableZshIntegration = true; # see note on other shells below
+      enableZshIntegration = false; # see note on other shells below
       nix-direnv.enable = true;
   };
 
@@ -202,6 +207,15 @@
      bind -T copy-mode-vi MouseDrag1Pane select-pane \; send-keys -X begin-selection
      bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe
    '';
+  };
+
+  programs.atuin = {
+    enable = true;
+    enableZshIntegration = false;
+    settings = {
+      keymap_mode = "vim-insert";
+      enter_accept = true;
+    };
   };
   #home.file.".config/hypr/hyprland.conf".source = ./hyprland/hyprland.conf;
   

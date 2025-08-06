@@ -6,7 +6,7 @@ let
     postInstall = (oldAttrs.postInstall or "")  + ''
       mv $out/bin/code $out/bin/code-original
       makeWrapper $out/bin/code-original $out/bin/code \
-        --add-flags "--disable-gpu"
+        --add-flags "--disable-gpu --enable-wayland-ime --wayland-text-input-version=3"
     '';
   });
 in
@@ -16,7 +16,6 @@ in
     rustdesk-flutter
     inputs.zen-browser.packages."${system}".default
     inputs.nixpkgs-unstable.ayugram-desktop
-    spotify
     #inputs.ayugram-desktop.packages.${system}.ayugram-desktop
     vscode-modified.fhs
     spotify
