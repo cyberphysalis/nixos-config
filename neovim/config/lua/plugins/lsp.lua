@@ -16,6 +16,14 @@ vim.lsp.config["luals"] = {
 }
 vim.lsp.enable("luals")
 
+vim.lsp.config["gopls"] = {
+  cmd = { "gopls" },
+  filetypes = { "go", "gomod", "gowrok", "gotmpl" },
+  root_markers = { "go.mod", "go.work" },
+  single_file_support = true,
+}
+vim.lsp.enable("gopls")
+
 vim.lsp.config["ts_ls"] = {
   cmd = { "typescript-language-server", "--stdio" },
   filetypes = { "typescript", "typescriptreact", "typescript.tsx", "javascript", "javascriptreact", "javascript.jsx"},
