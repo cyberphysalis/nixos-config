@@ -157,6 +157,21 @@
     '';
   };
 
+  programs.starship = {
+    enable = true;
+    enableZshIntegration = true;
+    settings = {
+      add_newline = true;
+      nix_shell = {
+        disabled = false;
+      };
+      kubernetes = {
+        detect_env_vars = [ "KUBECONFIG" ];
+        disabled = false;
+      };
+    };
+  };
+
   programs.direnv = {
       enable = true;
       enableZshIntegration = false; # see note on other shells below
