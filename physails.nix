@@ -110,6 +110,19 @@
     };
   };
 
+  # 截止到 1.1.3 版本，在 Wayland 版本中，primary copyboard 无法和 default copyboard 互通，在终端中的复制内容无法粘贴到浏览器中
+  programs.ghostty = {
+    enable = true;
+    package = inputs.nixpkgs-unstable.ghostty;
+    settings = {
+      font-family = "Maple Mono CN";
+      background-opacity = 0.8;
+      clipboard-read = "allow";
+      clipboard-write = "allow";
+      # TERM env, 默认是 xterm-ghostty 在使用 ssh 登录到其他服务器时会影响色彩输出
+      term = "xterm-256color";
+    };
+  };
   programs.zsh = {
     enable = true;
     autocd = true;
