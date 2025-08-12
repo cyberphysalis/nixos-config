@@ -109,7 +109,7 @@
       };
     };
   };
-
+  
   # 截止到 1.1.3 版本，在 Wayland 版本中，primary copyboard 无法和 default copyboard 互通，在终端中的复制内容无法粘贴到浏览器中
   programs.ghostty = {
     enable = true;
@@ -123,6 +123,66 @@
       term = "xterm-256color";
     };
   };
+
+  programs.wezterm = {
+    enable = true;
+    package = inputs.nixpkgs-unstable.wezterm;
+    enableZshIntegration = true;
+    extraConfig = ''
+      local config = wezterm.config_builder()
+      local action = wezterm.action
+
+      -- gpu config
+      config.front_end = 'WebGpu'
+      config.webgpu_preferred_adapter = {
+        backend = 'Vulkan',
+        device = 8644,
+        device_type = 'DiscreteGpu',
+        driver = 'radv'  ,
+        driver_info = '570.153.02',
+        name = 'NVIDIA GeForce GTX 1660 SUPER',
+        vendor = 4318,
+      }
+      config.webgpu_power_preference = "HighPerformance"
+
+      -- config.color_scheme = 'Kimber (base16)'
+      -- config.color_scheme = 'Blazer (Gogh)'
+      -- config.color_scheme = 'Breeze'
+
+      -- config.color_scheme = 'Bleh-1 (terminal.sexy)'
+      config.color_scheme = 'Catppuccin Mocha (Gogh)'
+      
+      -- tab bars
+      config.enable_tab_bar = true
+      
+      config.hide_tab_bar_if_only_one_tab = true
+      config.use_fancy_tab_bar = true
+      config.show_close_tab_button_in_tabs = false
+      config.show_new_tab_button_in_tab_bar = false
+      config.window_decorations = "NONE"
+      config.window_background_opacity = 0.8
+      config.window_frame = {
+          font_size = 12;
+      }
+      
+      config.leader = { key = 'a', mods = 'ALT', timeout_milliseconds = 1000 }
+      config.keys = {
+        -- This will create a new split and run your default program inside it
+        { key = [[/]], mods = 'CTRL', action = action.SplitVertical { domain = 'CurrentPaneDomain' } },
+        { key = [[(]], mods = 'CTRL|SHIFT', action = action.CloseCurrentPane({ confirm = true }) },
+        -- { key = 'L', mods = 'CTRL', action = wezterm.action.ShowDebugOverlay },
+        { key = "t", mods = 'ALT', action = action.SpawnTab("CurrentPaneDomain") },
+        { key = "k", mods = 'LEADER', action = action.ActivatePaneDirection("Up") },
+        { key = "j", mods = 'LEADER', action = action.ActivatePaneDirection("Down") },
+        { key = "h", mods = 'LEADER', action = action.ActivatePaneDirection("Left") },
+        { key = "l", mods = 'LEADER', action = action.ActivatePaneDirection("Right") },
+      }
+      config.enable_scroll_bar = true
+      config.font = wezterm.font 'Maple Mono CN'
+      return config
+    '';
+  };
+
   programs.zsh = {
     enable = true;
     autocd = true;
