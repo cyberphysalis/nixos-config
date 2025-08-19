@@ -6,10 +6,7 @@
   outputs = { self, nixpkgs }:
     let
       overlays = [
-        (final: prev: rec {
-          nodejs = prev.nodejs_20;
-        })
-        ( import ./default.nix )
+        ( import ./claude-code-router )
       ];
       supportedSystems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
       forEachSupportedSystem = f: nixpkgs.lib.genAttrs supportedSystems (system: f {
@@ -21,10 +18,11 @@
     in
     {
       devShells = forEachSupportedSystem ({ pkgs }: {
-        default = pkgs.mkShell {
+        claude-code-router = pkgs.mkShell {
           packages = with pkgs; [
             node2nix
-            nodejs
+            nodejs_20
+            claude-code-router
           ];
         };
       });
