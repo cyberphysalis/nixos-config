@@ -129,7 +129,7 @@
   users.users.physails = {
     isNormalUser = true;
     extraGroups = [ "wheel" "audio" "video" "render" ]; # Enable ‘sudo’ for the user.
-    shell = pkgs.zsh;
+    shell = pkgs.fish;
    # packages = with pkgs; [
    #   firefox
    #   tree
@@ -179,7 +179,7 @@
   # };
   programs.nix-ld.enable = true;
 
-  #programs.fish.enable = true;
+  programs.fish.enable = true;
 
   programs.zsh = {
     enable = true;

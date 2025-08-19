@@ -28,7 +28,7 @@
     (writeShellScriptBin "install-overlays" (builtins.readFile ./overlays/install-overlays.sh))
   ]) ++ (with inputs.nixpkgs-unstable; [
     lazygit
-    aider-chat-with-browser
+    # aider-chat-with-browser
   ]);
 
   programs.vim = {
@@ -136,6 +136,15 @@
   # 软链接方便快速配置，实现 hot reload
   home.file.".config/wezterm/base.lua".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos/wezterm/base.lua";
 
+  programs.fish = {
+    enable = true;
+    interactiveShellInit = ''
+      fzf --fish | FZF_ALT_C_COMMAND= source
+      atuin init fish --disable-up-arrow | source
+      zoxide init --cmd cd fish  | source
+    '';
+  };
+
   programs.zsh = {
     enable = true;
     autocd = true;
@@ -186,6 +195,7 @@
   programs.starship = {
     enable = true;
     enableZshIntegration = true;
+    enableFishIntegration = true;
     settings = {
       add_newline = true;
       nix_shell = {
@@ -253,6 +263,7 @@
   programs.atuin = {
     enable = true;
     enableZshIntegration = false;
+    enableFishIntegration = false;
     settings = {
       keymap_mode = "vim-insert";
       enter_accept = true;
