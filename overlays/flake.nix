@@ -24,6 +24,9 @@
             nodejs_20
             claude-code-router
           ];
+          shellHook = ''
+            name='claude-code-router.dev'
+          '';
         };
       });
     };
