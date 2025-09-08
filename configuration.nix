@@ -94,7 +94,7 @@
     #    "Iosevka"
     #  ];})
     ] ++ [
-      inputs.nixpkgs-unstable.maple-mono.CN
+      inputs.nixpkgs-unstable.maple-mono.NL-NF-CN
       inputs.nixpkgs-unstable.maple-mono.Normal-TTF
     ];
     fontconfig.defaultFonts = {

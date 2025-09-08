@@ -40,23 +40,24 @@ config.window_padding = {
   top = 0,
   bottom = 0,
 }
-config.font = wezterm.font 'Maple Mono CN'
+config.font = wezterm.font 'Maple Mono NL NF CN'
 config.adjust_window_size_when_changing_font_size = false
 config.enable_scroll_bar = true
 
 config.leader = { key = 'a', mods = 'ALT', timeout_milliseconds = 1000 }
 config.keys = {
   -- This will create a new split and run your default program inside it
-  { key = [[/]], mods = 'CTRL', action = action.SplitVertical { domain = 'CurrentPaneDomain' } },
-  { key = [[(]], mods = 'CTRL|SHIFT', action = action.CloseCurrentPane({ confirm = true }) },
+  { key = '-', mods = 'ALT', action = action.SplitVertical { domain = 'CurrentPaneDomain' } },
+  { key = [[\]], mods = 'ALT', action = action.SplitHorizontal { domain = 'CurrentPaneDomain' } },
+  -- { key = [[(]], mods = 'CTRL|SHIFT', action = action.CloseCurrentPane({ confirm = true }) },
   -- { key = 'L', mods = 'CTRL', action = wezterm.action.ShowDebugOverlay },
   { key = 'Enter', mods = 'ALT', action = action.SpawnTab("CurrentPaneDomain") },
   { key = 'k', mods = 'LEADER', action = action.ActivatePaneDirection("Up") },
   { key = 'j', mods = 'LEADER', action = action.ActivatePaneDirection("Down") },
   { key = 'h', mods = 'LEADER', action = action.ActivatePaneDirection("Left") },
   { key = 'l', mods = 'LEADER', action = action.ActivatePaneDirection("Right") },
-  { key = '-', mods = 'ALT', action = action.DecreaseFontSize },
-  { key = '=', mods = 'ALT', action = action.IncreaseFontSize },
+  { key = '-', mods = 'CTRL', action = action.DecreaseFontSize },
+  { key = '=', mods = 'CTRL', action = action.IncreaseFontSize },
   { key = 'Tab', mods = 'ALT', action = wezterm.action.ShowTabNavigator },
 }
 
