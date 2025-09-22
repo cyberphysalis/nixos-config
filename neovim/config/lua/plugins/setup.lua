@@ -43,6 +43,7 @@ local plugins = {
   { url = "https://git.sr.ht/~whynothugo/lsp_lines.nvim", name = "lsp_lines" , config = true },
   "lewis6991/gitsigns.nvim", -- display git hunks in side panel
   "zbirenbaum/copilot.lua",
+  { import = "plugins.ufo" },
   { import = "plugins.avante"},
   { import = "plugins.term" },
   { import = "plugins.outline" },
