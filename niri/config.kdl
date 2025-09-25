@@ -268,15 +268,22 @@ window-rule {
     // - Flatpak Firefox (app-id is "org.mozilla.firefox")
     match app-id=r#"firefox$"# title="^Picture-in-Picture$"
     match app-id=r#"^zen$"# title="^Picture-in-Picture$"
+    // vivaldi notification window
+    match app-id=r#"^$"# title="^$"
+    //match app-id="com.ayugram.desktop" title="Media viewer"
     open-floating true
 }
 
 // Open telegram or ayugram media-viewer as floating
 window-rule {
-    // This app-id regular expression will work for both:
-    // - host Firefox (app-id is "firefox")
-    // - Flatpak Firefox (app-id is "org.mozilla.firefox")
-    match app-id=r#"com\.ayugram\.desktop$"# title="^Media viewer$"
+    match app-id="com.ayugram.desktop" title="Media viewer"
+    open-floating true
+    // 默认 fullscreen 打开会多一个滑动的转场动画
+    open-fullscreen false
+}
+
+
+/-window-rule {
     open-floating true
 }
 

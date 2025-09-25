@@ -66,9 +66,10 @@ in
     };
   };
 
-  programs.niri = {
-    config = (builtins.readFile ./config.kdl);
-  };
+  # programs.niri = {
+  #   config = (builtins.readFile ./config.kdl);
+  # };
+  home.file.".config/niri/config.kdl".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos/niri/config.kdl";
 
   #programs.google-chrome = {
   #programs.chromium = {
@@ -93,10 +94,4 @@ in
       #"--enable-features=Vulkan"
     ];
   };
- # home.file = {
- #   ".config/niri/config.kdl" = {
- #     source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos/niri/config.kdl";
- #     recursive = false;
- #   };
- # };
 }
