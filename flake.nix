@@ -12,8 +12,8 @@
 
     # home-manager 依赖
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.05"; 
-      inputs.nixpkgs.follows = "nixpkgs"; 
+      url = "github:nix-community/home-manager/release-25.05";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     home-manager-unstable = {
@@ -67,6 +67,7 @@
 
     nixpkgs-unstable = import inputs.nixpkgs-unstable {
       inherit system;
+      config.allowUnfree = true;
     };
     hyprland-pkgs = inputs.hyprland;
     physails-secrets = inputs.physails-secrets;

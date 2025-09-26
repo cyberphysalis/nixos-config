@@ -19,6 +19,9 @@ in
     #inputs.ayugram-desktop.packages.${system}.ayugram-desktop
     vscode-modified.fhs
     spotify
+    inputs.nixpkgs-unstable.obsidian
+    inputs.nixpkgs-unstable.discord
+    inputs.nixpkgs-unstable.zed-editor-fhs
   ];
 
   services.flameshot = {
