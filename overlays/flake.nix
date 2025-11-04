@@ -1,12 +1,16 @@
 {
   description = "A Nix-flake-based Node.js development environment";
 
-  inputs.nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.*.tar.gz";
+  inputs = {
+    nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.*.tar.gz";
+    claude-code.url = "github:sadjow/claude-code-nix";
+  };
 
-  outputs = { self, nixpkgs }:
+  outputs = { self, nixpkgs, ... }@inputs:
     let
       overlays = [
         ( import ./claude-code-router )
+        inputs.claude-code.overlays.default
       ];
       supportedSystems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
       forEachSupportedSystem = f: nixpkgs.lib.genAttrs supportedSystems (system: f {
@@ -20,9 +24,8 @@
       devShells = forEachSupportedSystem ({ pkgs }: {
         claude-code-router = pkgs.mkShell {
           packages = with pkgs; [
-            node2nix
-            nodejs_20
             claude-code-router
+            claude-code
           ];
           shellHook = ''
             name='claude-code-router.dev'
