@@ -4,7 +4,7 @@
   # inputs 定义当前 flake 库的依赖项
   inputs = {
     # nixpkgs 依赖
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
     # url 属性定义依赖源；这里使用 NixOS 官方软件源 nixos-23.11 分支的 nju 镜像
     #nixpkgs.url = "git+https://mirror.nju.edu.cn/git/nixpkgs.git?ref=nixos-25.05";
 
@@ -12,7 +12,7 @@
 
     # home-manager 依赖
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.05";
+      url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
