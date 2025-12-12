@@ -26,6 +26,10 @@
     niri = {
       url = "github:sodiboo/niri-flake";
       inputs.nixpkgs.follows = "nixpkgs"; 
+    nixpkgs.follows = "nixos-cosmic/nixpkgs";
+    nixos-cosmic = {
+      url = "github:lilyinstarlight/nixos-cosmic";
+      #inputs.nixpkgs.follows = "nixos-cosmic/nixpkgs";
     };
 
     zen-browser = {
@@ -72,6 +76,7 @@
     hyprland-pkgs = inputs.hyprland;
     physails-secrets = inputs.physails-secrets;
     niri = inputs.niri;
+    cosmic = inputs.nixos-cosmic;
     zen-browser = inputs.zen-browser;
     nur = inputs.nur;
     ayugram-desktop = inputs.ayugram-desktop;
@@ -82,17 +87,16 @@
     nixosConfigurations.wang-nix = nixpkgs.lib.nixosSystem {
       inherit system;
 
-      specialArgs = { inherit nixpkgs-unstable hyprland-pkgs physails-secrets niri zen-browser nur ayugram-desktop; };
+      specialArgs = { inherit nixpkgs-unstable hyprland-pkgs physails-secrets niri cosmic zen-browser nur ayugram-desktop; };
       modules = [
         # 这里导入之前我们使用的 configuration.nix，
         # 这样旧的配置文件仍然能生效
         ./configuration.nix
         ./login.nix
-#        ./hyprland
         niri.nixosModules.niri
         ./niri/niri.nix
-        #hyprland.nixosMoudles.default
-        #{ programs.hyprland.enable = true; }
+        cosmic.nixosModules.default
+        #./cosmic/cosmic.nix
         home-manager.nixosModules.home-manager
         {
           home-manager.useGlobalPkgs = true;
@@ -100,8 +104,8 @@
 
           home-manager.users.physails.imports = [
             ./physails.nix
-#            ./hyprland/hm.nix
             ./niri/hm.nix
+            #./cosmic/hm.nix
             ./neovim/hm-module.nix
             ./emacs/hm-module.nix
           ];
