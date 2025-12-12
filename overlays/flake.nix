@@ -26,6 +26,7 @@
           packages = with pkgs; [
             claude-code-router
             claude-code
+            nodejs_24
           ];
           shellHook = ''
             name='claude-code-router.dev'

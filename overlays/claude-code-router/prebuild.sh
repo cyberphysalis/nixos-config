@@ -1,6 +1,6 @@
 #!/bin/env bash
 
-export version=1.0.65
+export version=1.0.72
 nix hash convert --hash-algo sha256 \
 $(nix-prefetch-url  https://registry.npmjs.org/@musistudio/claude-code-router/-/claude-code-router-${version}.tgz)
 

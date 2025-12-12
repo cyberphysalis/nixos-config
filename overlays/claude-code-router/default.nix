@@ -2,14 +2,14 @@ self: super: {
   # 将我们的包添加到 nixpkgs 集合中
   claude-code-router = super.buildNpmPackage rec {
     pname = "claude-code-router";
-    version = "1.0.65";
+    version = "1.0.72";
 
     src = super.fetchurl {
       url = "https://registry.npmjs.org/@musistudio/claude-code-router/-/claude-code-router-${version}.tgz";
-      sha256 = "sha256-R8G2SnW8VU1t5UDN5lK2x3WRzG7cYGjoL94ENoOCvhY=";
+      sha256 = "sha256-Ahkko0sySfMz98u3wfzUvM39Lb+uoFsMJUjCPvgr8sw=";
     };
 
-    npmDepsHash = "sha256-1g6tbc5zTTn0zI1jYOpQDKQmtB5qgWA2Pyoq3OsihGI=";
+    npmDepsHash = "sha256-c7p5htGEo/446omx4SiIOMpXeXlNNuU5wEhX9VMesvc=";
 
   postPatch = ''
     cp ${./package-lock.json} package-lock.json
