@@ -37,11 +37,16 @@
     # color code
     # https://upload.wikimedia.org/wikipedia/commons/1/15/Xterm_256color_chart.svg
     extraConfig = ''
+      " 行号设置
       set nu
       set relativenumber
+      " 快速切换行号设置
+      command! Tn set number! relativenumber!
+      " 缩进设置
       set tabstop=2
       set shiftwidth=2
       set expandtab
+      " 语法高亮
       syntax on
       colorscheme default
       set list
@@ -49,7 +54,7 @@
       set cursorline
       hi CursorLineNr   cterm=NONE ctermbg=None ctermfg=None
       hi CursorLine     cterm=NONE ctermbg=237 ctermfg=None
-      " auto jump to last editing line when open 
+      " auto jump to last editing line when open
       if has("autocmd")
         au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
         \| exe "normal! g'\"" | endif
