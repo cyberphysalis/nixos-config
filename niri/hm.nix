@@ -12,6 +12,10 @@ let
 in
 {
   home.packages = with pkgs; [
+  imports = [
+    inputs.noctalia.homeModules.default
+    inputs.dms.homeModules.dank-material-shell
+  ];
     swaylock-effects
     rustdesk-flutter
     inputs.zen-browser.packages."${system}".default
@@ -23,6 +27,8 @@ in
     inputs.nixpkgs-unstable.discord
     inputs.nixpkgs-unstable.zed-editor-fhs
   ];
+    # for dms theme
+    papirus-icon-theme
 
   services.flameshot = {
     enable = true;
@@ -43,8 +49,88 @@ in
   #  # settings = {};
   #};
 
-  programs.waybar = {
+  programs.dank-material-shell = {
     enable = true;
+
+    systemd = {
+      enable = true;             # Systemd service for auto-start
+      restartIfChanged = true;   # Auto-restart dms.service when dank-material-shell changes
+    };
+
+    enableSystemMonitoring = true;
+    # dgop 用于监控系统性能, 在 25.11 中，nixpkgs 暂时不包含这个包，单独引入
+    dgop.package = inputs.dgop.packages.${pkgs.system}.default;
+    # 在 dms gui 中更新配置时，会保存到  ~/.config/DankMaterialShell/settings.json 文件中
+    # hm module 配置逻辑 https://github.com/AvengeMedia/DankMaterialShell/blob/master/distro/nix/home.nix
+    # settings = {};
+  };
+
+  programs.noctalia-shell = {
+    enable = false;
+    systemd.enable = true;
+    settings = {
+      # configure noctalia here
+      dock = {
+        enabled = true;
+        position = "top";
+        displayMode = "auto_hide";
+      };
+      bar = {
+        density = "compact";
+        position = "top";
+        showCapsule = false;
+        monitors = [ "DP-1" ];
+        widgets = {
+          left = [
+            {
+              id = "ControlCenter";
+              useDistroLogo = true;
+            }
+            {
+              id = "Network";
+            }
+            {
+              id = "Bluetooth";
+            }
+          ];
+          center = [
+            {
+              hideUnoccupied = false;
+              id = "Workspace";
+              labelMode = "none";
+            }
+          ];
+          right = [
+            {
+              alwaysShowPercentage = false;
+              id = "Battery";
+              warningThreshold = 30;
+            }
+            {
+              formatHorizontal = "HH:mm";
+              formatVertical = "HH mm";
+              id = "Clock";
+              useMonospacedFont = true;
+              usePrimaryColor = true;
+            }
+          ];
+        };
+      };
+      colorSchemes.predefinedScheme = "Monochrome";
+      general = {
+        avatarImage = "/home/drfoobar/.face";
+        radiusRatio = 0.2;
+      };
+      location = {
+        monthBeforeDay = true;
+        name = "Hefei, China";
+      };
+    };
+    # this may also be a string or a path to a JSON file.
+  };
+
+  programs.waybar = {
+    enable = false;
     systemd.enable = false;
     settings.mainBar = {
       layer = "top";

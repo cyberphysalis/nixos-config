@@ -218,8 +218,6 @@ layout {
 // which may be more convenient to use.
 // See the binds section below for more spawn examples.
 // spawn-at-startup "alacritty" "-e" "fish"
-spawn-at-startup "waybar"
-spawn-at-startup "swaybg" "-i" "/home/physails/nixos/wallpapers/wallhaven-x6vzwd_1920x1080.png"
 
 // Uncomment this line to ask the clients to omit their client-side decorations if possible.
 // If the client will specifically ask for CSD, the request will be honored.
@@ -323,8 +321,13 @@ binds {
 
     // Suggested binds for running programs: terminal, app launcher, screen locker.
     Mod+Return { spawn "wezterm"; }
-    Mod+D { spawn "fuzzel"; }
-    Super+Alt+L {
+
+    //Mod+D { spawn "fuzzel"; }
+    //Mod+D { spawn "noctalia-shell" "ipc" "call" "launcher" "toggle"; }
+    Mod+D { spawn "dms" "ipc" "spotlight" "toggle"; }
+    /-Super+Alt+L { spawn "noctalia-shell" "ipc" "call" "lockScreen" "lock"; }
+    Super+Alt+L { spawn "dms" "ipc" "lock" "lock"; }
+    /-Super+Alt+L {
         spawn "swaylock" \
               "--screenshots" \
               "--clock" \

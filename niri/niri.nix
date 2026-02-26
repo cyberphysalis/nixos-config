@@ -4,6 +4,8 @@
     enable = true;
   };
 
+  # 关闭 niri 的，使用 dms Polkit Agent
+  systemd.user.services.niri-flake-polkit.enable = false;
   xdg.portal = {
     enable = true;
     xdgOpenUsePortal = true;

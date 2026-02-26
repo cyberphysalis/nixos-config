@@ -32,6 +32,20 @@
       #inputs.nixpkgs.follows = "nixos-cosmic/nixpkgs";
     };
 
+    noctalia = {
+      url = "github:noctalia-dev/noctalia-shell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    dms = {
+      url = "github:AvengeMedia/DankMaterialShell/stable";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    dgop = {
+      url = "github:AvengeMedia/dgop";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       # inputs.nixpkgs.follows = "nixpkgs"; 
@@ -77,6 +91,9 @@
     physails-secrets = inputs.physails-secrets;
     niri = inputs.niri;
     cosmic = inputs.nixos-cosmic;
+    noctalia = inputs.noctalia;
+    dms = inputs.dms;
+    dgop = inputs.dgop;
     zen-browser = inputs.zen-browser;
     nur = inputs.nur;
     ayugram-desktop = inputs.ayugram-desktop;
@@ -87,7 +104,7 @@
     nixosConfigurations.wang-nix = nixpkgs.lib.nixosSystem {
       inherit system;
 
-      specialArgs = { inherit nixpkgs-unstable hyprland-pkgs physails-secrets niri cosmic zen-browser nur ayugram-desktop; };
+      specialArgs = { inherit nixpkgs-unstable hyprland-pkgs physails-secrets niri noctalia dms zen-browser nur ayugram-desktop; };
       modules = [
         # 这里导入之前我们使用的 configuration.nix，
         # 这样旧的配置文件仍然能生效
@@ -114,7 +131,7 @@
           # arguments to home.nix
           home-manager.extraSpecialArgs = {
             #inherit (inputs) hyprland-pkgs nixpkgs-unstable;
-            inherit hyprland-pkgs nixpkgs-unstable zen-browser nur physails-secrets ayugram-desktop;
+            inherit nixpkgs hyprland-pkgs nixpkgs-unstable zen-browser noctalia dms dgop nur physails-secrets ayugram-desktop;
           };
         }
       ];
