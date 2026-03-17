@@ -2,10 +2,16 @@
 {
   programs.niri = {
     enable = true;
+    package = pkgs.niri-unstable;
   };
 
   # 关闭 niri 的，使用 dms Polkit Agent
   systemd.user.services.niri-flake-polkit.enable = false;
+
+  environment.systemPackages = with pkgs; [
+    xwayland-satellite
+  ];
+
   xdg.portal = {
     enable = true;
     xdgOpenUsePortal = true;
@@ -37,8 +43,8 @@
         #rime-data
         # for flypy chinese input method
         # needed enable rime using configtool after installed
-        fcitx5-configtool
-        fcitx5-chinese-addons
+        qt6Packages.fcitx5-configtool
+        qt6Packages.fcitx5-chinese-addons
         (fcitx5-rime.override {
           rimeDataPkgs = [
             ../rime

@@ -9,28 +9,42 @@ let
         --add-flags "--disable-gpu --enable-wayland-ime --wayland-text-input-version=3"
     '';
   });
+  discord-modified = inputs.nixpkgs-unstable.discord.overrideAttrs (oldAttrs: {
+    nativeBuildInputs = (oldAttrs.nativeBuildInputs or []) ++ [ pkgs.makeWrapper ];
+    # "Discord" 是 binaryName 变量的值，对不同的版本需要替换，这里没找到直接使用 binaryName 变量的方法
+    postInstall = (oldAttrs.postInstall or "")  + ''
+      mv $out/bin/Discord $out/bin/Discord-original
+      makeWrapper $out/bin/Discord-original $out/bin/Discord \
+        --add-flags "--disable-gpu --enable-wayland-ime --wayland-text-input-version=3"
+    '';
+  });
 in
 {
-  home.packages = with pkgs; [
   disabledModules = [ "programs/chromium.nix" ];
   imports = [
     inputs.noctalia.homeModules.default
     inputs.dms.homeModules.dank-material-shell
     ./ug-chromium.nix
   ];
+
+  home.packages = (with pkgs; [
     swaylock-effects
     rustdesk-flutter
     inputs.zen-browser.packages."${system}".default
-    inputs.nixpkgs-unstable.ayugram-desktop
-    #inputs.ayugram-desktop.packages.${system}.ayugram-desktop
+    #inputs.nixpkgs-unstable.ayugram-desktop
+    inputs.ayugram-desktop.packages.${system}.ayugram-desktop
     vscode-modified.fhs
     spotify
     inputs.nixpkgs-unstable.obsidian
-    inputs.nixpkgs-unstable.discord
+    #inputs.nixpkgs-unstable.discord
+    discord-modified
     inputs.nixpkgs-unstable.zed-editor-fhs
-  ];
+    foliate
     # for dms theme
     papirus-icon-theme
+  ]) ++ (with inputs.nixpkgs-unstable; [
+    jetbrains.datagrip
+  ]);
 
   services.flameshot = {
     enable = true;
