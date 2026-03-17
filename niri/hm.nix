@@ -12,9 +12,11 @@ let
 in
 {
   home.packages = with pkgs; [
+  disabledModules = [ "programs/chromium.nix" ];
   imports = [
     inputs.noctalia.homeModules.default
     inputs.dms.homeModules.dank-material-shell
+    ./ug-chromium.nix
   ];
     swaylock-effects
     rustdesk-flutter
@@ -181,6 +183,29 @@ in
       "--wayland-text-input-version=3"
       # enable hardware acceleration - vulkan api
       #"--enable-features=Vulkan"
+    ];
+  };
+
+  programs.chromium = {
+    enable = true;
+    package = inputs.nixpkgs-unstable.ungoogled-chromium;
+    userDataDir = "${config.xdg.configHome}/.userdata/my-ug-chromium";
+    extensions = [
+      {
+        id = "lkbebcjgcmobigpeffafkodonchffocl";
+        #crxPath = "${config.home.homeDirectory}/nixos/chromium-extensions/bpc.crx";
+        crxPath = "/home/physails/nixos/chromium-extensions/bpc.crx";
+        version = "4.3.0.2";
+      }
+      { id = "ddkjiahejlhfcafbddmgiahcphecmpfh"; } # ublock origin lite
+    ];
+
+    commandLineArgs = [
+      "--ozone-platform-hint=auto"
+      "--ozone-platform=wayland"
+      "--enable-wayland-ime"
+      "--wayland-text-input-version=3"
+      "--extension-mime-request-handling=always-prompt-for-install"
     ];
   };
 }
