@@ -13,7 +13,13 @@
 ;; (load-theme 'modus-operandi-tritanopia t)
 
 
+(tool-bar-mode -1)
+(menu-bar-mode -1)
+(scroll-bar-mode -1)
+(column-number-mode 1)
+(global-display-line-numbers-mode 1)
 
+ 
 (recentf-mode 1)
 (savehist-mode 1)
 
@@ -21,7 +27,8 @@
 
 ;; Revert buffers when underlying file has changed, and there are no unsaved changes
 (global-auto-revert-mode 1)
-
+(custom-set-variables
+ '(display-line-numbers-type 'relative))
 
 
 (require 'package)
@@ -31,14 +38,35 @@
 ;;(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 (package-initialize)
 
-;; (use-package zenburn-theme
-;;   :config
-;;   (load-theme 'zenburn t))
+;;(use-package zenburn-theme
+;;  :config
+;;  (load-theme 'zenburn t))
 
 (use-package color-theme-sanityinc-tomorrow
    :ensure t
-   :config
-   (load-theme 'sanityinc-tomorrow-day))
+ :config
+   (load-theme 'sanityinc-tomorrow-night))
+
+;;(use-package doom-themes
+;;  :ensure t
+;;  :custom
+;;  ;; Global settings (defaults)
+;;  (doom-themes-enable-bold t)   ; if nil, bold is universally disabled
+;;  (doom-themes-enable-italic t) ; if nil, italics is universally disabled
+;;  ;; for treemacs users
+;;  ;;(doom-themes-treemacs-theme "doom-material") ; use "doom-colors" for less minimal icon theme
+;;  :config
+;;  (load-theme 'doom-material t)
+;;
+;;  ;; Enable flashing mode-line on errors
+;;  (doom-themes-visual-bell-config)
+;;  ;; Enable custom neotree theme (nerd-icons must be installed!)
+;;  ;;(doom-themes-neotree-config)
+;;  ;; or for treemacs users
+;;;;  (doom-themes-treemacs-config)
+;;  ;; Corrects (and improves) org-mode's native fontification.
+;;  (doom-themes-org-config))
+;;
 
 (use-package pixel-scroll
   :bind
@@ -127,3 +155,14 @@
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 (setq indent-line-function 'insert-tab)
+;; dired config
+(setq dired-kill-when-opening-new-dired-buffer t)
+
+(defun kill-this-buffer-volatile ()
+    "Kill current buffer, even if it has been modified."
+    (interactive)
+    (set-buffer-modified-p nil)
+    (kill-this-buffer))
+(global-set-key (kbd "C-x k") 'kill-current-buffer)
+
+

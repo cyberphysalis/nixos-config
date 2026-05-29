@@ -1,89 +1,93 @@
 require("mason").setup({
-  ui = {
-    icons = {
-      package_installed = "✓",
-      package_pending = "➜",
-      package_uninstalled = "✗",
-    },
-  },
+	ui = {
+		icons = {
+			package_installed = "✓",
+			package_pending = "➜",
+			package_uninstalled = "✗",
+		},
+	},
 })
 
-vim.lsp.config["luals"] = {
-  cmd = { "lua-language-server" },
-  filetypes = { "lua" },
-  root_markers = { ".luarc.json", ".luarc.jsonc", ".luacheckrc" },
-  single_file_support = true,
+vim.lsp.config["copilot"] = {
+	cmd = { "/home/physails/workspaces/copilot-lsp/copilot-language-server", "--stdio" },
 }
-vim.lsp.enable("luals")
+vim.lsp.enable("copilot")
 
-vim.lsp.config["gopls"] = {
-  cmd = { "gopls" },
-  filetypes = { "go", "gomod", "gowrok", "gotmpl" },
-  root_markers = { "go.mod", "go.work" },
-  single_file_support = true,
-}
+--  cmd = { "lua-language-server" },
+--  filetypes = { "lua" },
+--  root_markers = { ".luarc.json", ".luarc.jsonc", ".luacheckrc" },
+--  single_file_support = true,
+--}
+vim.lsp.enable("lua_ls")
+
+-- vim.lsp.config["gopls"] = {
+--   cmd = { "gopls" },
+--   filetypes = { "go", "gomod", "gowrok", "gotmpl" },
+--   root_markers = { "go.mod", "go.work" },
+--   single_file_support = true,
+-- }
 vim.lsp.enable("gopls")
 
-vim.lsp.config["ts_ls"] = {
-  cmd = { "typescript-language-server", "--stdio" },
-  filetypes = { "typescript", "typescriptreact", "typescript.tsx", "javascript", "javascriptreact", "javascript.jsx"},
-  root_markers = { "package.json", "tsconfig.json", "jsconfig.json" },
-  single_file_support = true,
-}
+--  vim.lsp.config["ts_ls"] = {
+--    cmd = { "typescript-language-server", "--stdio" },
+--    filetypes = { "typescript", "typescriptreact", "typescript.tsx", "javascript", "javascriptreact", "javascript.jsx"},
+--    root_markers = { "package.json", "tsconfig.json", "jsconfig.json" },
+--    single_file_support = true,
+--  }
 vim.lsp.enable("ts_ls")
 
-vim.lsp.config["svelte"] = {
-  cmd = { "svelteserver", "--stdio" },
-  filetypes = { "svelte" },
-  root_markers = { "package.json", "svelte.config.js", "svelte.config.cjs" },
-  single_file_support = true,
-}
+--vim.lsp.config["svelte"] = {
+--  cmd = { "svelteserver", "--stdio" },
+--  filetypes = { "svelte" },
+--  root_markers = { "package.json", "svelte.config.js", "svelte.config.cjs" },
+--  single_file_support = true,
+--}
 vim.lsp.enable("svelte")
 
-vim.lsp.config["rust-analyzer"] = {
-    cmd = { 'rust-analyzer' },
-    filetypes = { 'rust' },
-    single_file_support = true,
-    root_dir = function(bufnr, cb)
-      local cargo_crate_dir = vim.fs.root(bufnr, { 'Cargo.toml' })
-      if cargo_crate_dir then
-          vim.system({
-              'cargo',
-              'metadata',
-              '--no-depts',
-              '--format-version',
-              '1',
-              '--manifest-path',
-              cargo_crate_dir .. '/Cargo.toml',
-          }, { cwd = cargo_crate_dir }, function(obj)
-              if obj.code ~= 0 then
-                  cb(cargo_crate_dir)
-              else
-                  local success, result = pcall(vim.json.decode, obj.stdout)
-                  if success and result['workspace_root'] then
-                      cb(vim.fs.normalize(result['workspace_root']))
-                  else
-                      cb(cargo_crate_dir)
-                  end
-              end
-          end)
-      else
-          cb(vim.fs.root(bufnr, { 'rust-project.json', '.git' }))
-      end
-    end,
-  capabilities = {
-      experimental = {
-          serverStatusNotification = true,
-      },
-  },
-  before_init = function(init_params, config)
-      -- See https://github.com/rust-lang/rust-analyzer/blob/eb5da56d839ae0a9e9f50774fa3eb78eb0964550/docs/dev/lsp-extensions.md?plain=1#L26
-      if config.settings and config.settings['rust-analyzer'] then
-          init_params.initializationOptions = config.settings['rust-analyzer']
-      end
-  end,
-}
-vim.lsp.enable("rust-analyzer")
+-- vim.lsp.config["rust-analyzer"] = {
+--     cmd = { 'rust-analyzer' },
+--     filetypes = { 'rust' },
+--     single_file_support = true,
+--     root_dir = function(bufnr, cb)
+--       local cargo_crate_dir = vim.fs.root(bufnr, { 'Cargo.toml' })
+--       if cargo_crate_dir then
+--           vim.system({
+--               'cargo',
+--               'metadata',
+--               '--no-depts',
+--               '--format-version',
+--               '1',
+--               '--manifest-path',
+--               cargo_crate_dir .. '/Cargo.toml',
+--           }, { cwd = cargo_crate_dir }, function(obj)
+--               if obj.code ~= 0 then
+--                   cb(cargo_crate_dir)
+--               else
+--                   local success, result = pcall(vim.json.decode, obj.stdout)
+--                   if success and result['workspace_root'] then
+--                       cb(vim.fs.normalize(result['workspace_root']))
+--                   else
+--                       cb(cargo_crate_dir)
+--                   end
+--               end
+--           end)
+--       else
+--           cb(vim.fs.root(bufnr, { 'rust-project.json', '.git' }))
+--       end
+--     end,
+--   capabilities = {
+--       experimental = {
+--           serverStatusNotification = true,
+--       },
+--   },
+--   before_init = function(init_params, config)
+--       -- See https://github.com/rust-lang/rust-analyzer/blob/eb5da56d839ae0a9e9f50774fa3eb78eb0964550/docs/dev/lsp-extensions.md?plain=1#L26
+--       if config.settings and config.settings['rust-analyzer'] then
+--           init_params.initializationOptions = config.settings['rust-analyzer']
+--       end
+--   end,
+-- }
+vim.lsp.enable("rust_analyzer")
 --require("mason-lspconfig").setup({
 --  -- 确保需要安装的 LSP 服务，根据需要填写
 --  ensure_installed = should_installed_lsp
@@ -210,15 +214,30 @@ vim.lsp.enable("rust-analyzer")
 --  capabilities = capabilities,
 --}
 --
-require('copilot').setup({
-  suggestion = {
-    auto_trigger = true,
-    keymap = {
-      accept = "<C-j>",
-    }
-  },
-  filetypes = {
-    markdown = true,
-    yaml = true,
-  },
+-- require('copilot').setup({
+--   suggestion = {
+--     auto_trigger = true,
+--     keymap = {
+--       accept = "<C-j>",
+--     }
+--   },
+--   filetypes = {
+--     markdown = true,
+--     yaml = true,
+--   },
+-- })
+
+require("conform").setup({
+	formatters_by_ft = {
+		lua = { "stylua" },
+		-- You can customize some of the format options for the filetype (:help conform.format)
+		rust = { "rustfmt", lsp_format = "fallback" },
+		-- Conform will run the first available formatter
+		javascript = { "prettier", stop_after_first = true },
+	},
+	format_on_save = {
+		-- These options will be passed to conform.format()
+		timeout_ms = 500,
+		lsp_format = "fallback",
+	},
 })

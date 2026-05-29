@@ -29,6 +29,8 @@
   ]) ++ (with inputs.nixpkgs-unstable; [
     lazygit
     # aider-chat-with-browser
+    gemini-cli-bin
+    codex
   ]);
 
   programs.vim = {
@@ -64,11 +66,11 @@
 
   programs.git = {
     enable = true;
-    userName = "cyberphysails";
-    userEmail = "physqils@outlook.com";
-    extraConfig = {
-      http."https://github.com".proxy = "socks5://192.168.66.12:2080";
-    };
+    userName = "cyberphysalis";
+    userEmail = "cyberphysalis@outlook.com";
+    #extraConfig = {
+    #  http."https://github.com".proxy = "socks5://192.168.66.12:2080";
+    #};
   };
 
 
@@ -118,14 +120,20 @@
   # 截止到 1.1.3 版本，在 Wayland 版本中，primary copyboard 无法和 default copyboard 互通，在终端中的复制内容无法粘贴到浏览器中
   programs.ghostty = {
     enable = true;
-    package = inputs.nixpkgs-unstable.ghostty;
+    # package = inputs.nixpkgs-unstable.ghostty;
     settings = {
-      font-family = "Maple Mono CN";
-      background-opacity = 0.8;
+      font-family = "Maple Mono NL NF CN";
+      font-size = 12;
+      background-opacity = 0.9;
+      window-show-tab-bar = "never";
       clipboard-read = "allow";
       clipboard-write = "allow";
       # TERM env, 默认是 xterm-ghostty 在使用 ssh 登录到其他服务器时会影响色彩输出
       term = "xterm-256color";
+      keybind = [
+        "alt+tab=toggle_tab_overview"
+        "global:alt+backquote=toggle_quick_terminal"
+      ];
     };
   };
 
@@ -233,6 +241,7 @@
 
      set-environment -g WAYLAND_DISPLAY "wayland-1"
 
+     set -g default-shell /run/current-system/sw/bin/fish
      # # https://old.reddit.com/r/tmux/comments/mesrci/tmux_2_doesnt_seem_to_use_256_colors/
      set -g default-terminal "xterm-256color"
      set -ga terminal-overrides ",*256col*:Tc"

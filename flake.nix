@@ -25,11 +25,7 @@
 
     niri = {
       url = "github:sodiboo/niri-flake";
-      inputs.nixpkgs.follows = "nixpkgs"; 
-    nixpkgs.follows = "nixos-cosmic/nixpkgs";
-    nixos-cosmic = {
-      url = "github:lilyinstarlight/nixos-cosmic";
-      #inputs.nixpkgs.follows = "nixos-cosmic/nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
     noctalia = {
@@ -46,6 +42,12 @@
       url = "github:AvengeMedia/dgop";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    #nixpkgs.follows = "nixos-cosmic/nixpkgs-stable";
+    #nixos-cosmic = {
+    #  url = "github:lilyinstarlight/nixos-cosmic";
+    #  #inputs.nixpkgs.follows = "nixos-cosmic/nixpkgs";
+    #};
+
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       # inputs.nixpkgs.follows = "nixpkgs"; 
@@ -90,10 +92,10 @@
     hyprland-pkgs = inputs.hyprland;
     physails-secrets = inputs.physails-secrets;
     niri = inputs.niri;
-    cosmic = inputs.nixos-cosmic;
     noctalia = inputs.noctalia;
     dms = inputs.dms;
     dgop = inputs.dgop;
+    #cosmic = inputs.nixos-cosmic;
     zen-browser = inputs.zen-browser;
     nur = inputs.nur;
     ayugram-desktop = inputs.ayugram-desktop;
@@ -112,7 +114,7 @@
         ./login.nix
         niri.nixosModules.niri
         ./niri/niri.nix
-        cosmic.nixosModules.default
+        #cosmic.nixosModules.default
         #./cosmic/cosmic.nix
         home-manager.nixosModules.home-manager
         {

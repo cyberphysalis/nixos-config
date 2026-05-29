@@ -1,7 +1,7 @@
 { pkgs, lib, ...}@inputs:
 let
   tuigreet = lib.getExe pkgs.greetd.tuigreet;
-  sessions-dir = "${pkgs.niri-stable}/share/wayland-sessions";
+  sessions-dir = "${pkgs.niri}/share/wayland-sessions";
   #niri-session = "/run/current-system/sw/bin/niri-session";
 in
 {

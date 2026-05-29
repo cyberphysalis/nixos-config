@@ -8,6 +8,7 @@
 {
   # 安装 nvidia drivers 的必要选项
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.nvidia.acceptLicense = true;
   # explicit pulseaudio support in applications
   #nixpkgs.config.pulseaudio = true;
 
@@ -23,12 +24,13 @@
    
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nix.settings.substituters = [ 
-    "https://mirrors.ustc.edu.cn/nix-channels/store"
-    "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
 #    "https://mirror.sjtu.edu.cn/nix-channels/store"
     "https://hyprland.cachix.org"
     "https://cache.garnix.io"
+    "https://niri.cachix.org"
     "https://cosmic.cachix.org"
+    #"https://mirrors.ustc.edu.cn/nix-channels/store"
+    #"https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
     "https://cache.nixos.org"
     "https://nix-community.cachix.org"
   ];
@@ -36,6 +38,7 @@
     "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
     "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
     "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+    "niri.cachix.org-1:Wv0OmO7PsuocRKzfDoJ3mulSl7Z6oezYhGhR+3W2964="
     "cosmic.cachix.org-1:Dya9IyXD4xdBehWjrkPv6rtxpmMdRel02smYzA85dPE="
   ];
 
@@ -138,6 +141,7 @@
    # ];
   };
 
+  # for native wayland support in all chrome and most electron apps
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -146,16 +150,16 @@
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
     git
+    lsof
     pciutils
     openssl
     xdg-utils
+    fd
     # some network tools like ping, telnet
     inetutils
     # for paste, copy tool
     lemonade
     wl-clipboard-rs
-    zoxide
-    fzf
     tree
     neofetch
     tmux
@@ -165,6 +169,13 @@
     swaybg
     # screenshot
     satty
+    # tools
+    zoxide
+    fzf
+    yazi
+    jq
+    fd
+    ripgrep
   ];
   
   # 将 vim 设为默认编辑器

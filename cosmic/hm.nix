@@ -18,6 +18,12 @@ let
         --add-flags "--disable-gpu --enable-wayland-ime --wayland-text-input-version=3"
     '';
   });
+  # https://github.com/nix-community/home-manager/issues/322#issuecomment-1178614454
+  openssh-patched = pkgs.openssh.overrideAttrs (prev: {
+    patches = (prev.patches or [ ]) ++ [ ./openssh-nocheckcfg.patch ];
+  });
+  # https://github.com/nix-community/home-manager/issues/322#issuecomment-2265431023
+  zed-fhs-patched = inputs.nixpkgs-unstable.zed-editor.fhsWithPackages (_: [ openssh-patched ]);
 in
 {
   home.packages = (with pkgs; [
@@ -31,7 +37,8 @@ in
     inputs.nixpkgs-unstable.obsidian
     #inputs.nixpkgs-unstable.discord
     discord-modified
-    inputs.nixpkgs-unstable.zed-editor-fhs
+    #inputs.nixpkgs-unstable.zed-editor-fhs
+    zed-fhs-patched
   ]) ++ (with inputs.nixpkgs-unstable; [
     jetbrains.datagrip
   ]);

@@ -98,10 +98,15 @@ input {
 }
 
 environment {
-    QT_QPA_PLATFORM "wayland-egl"
+    // QT_QPA_PLATFORM "wayland-egl"
+
+    // noctalia 需要这个变量的值为 wayland
+    QT_QPA_PLATFORM "wayland"
     QT_IM_MODULE "fcitx5"
     // QT_IM_MODULES "wayland;fcitx;bus"
-    DISPLAY null
+
+    // Xorg 应用会使用这个变量, jetbrains 的应用需要使用 Xorg
+    //DISPLAY null
 
 }
 // Settings that influence how windows are positioned and sized.
@@ -249,6 +254,20 @@ animations {
 // Find more information on the wiki:
 // https://github.com/YaLTeR/niri/wiki/Configuration:-Window-Rules
 
+// window-rule for noctalia
+window-rule {
+  // Rounded corners for a modern look.
+  geometry-corner-radius 5
+
+  // Clips window contents to the rounded corner boundaries.
+  clip-to-geometry true
+}
+
+debug {
+  // Allows notification actions and window activation from Noctalia.
+  honor-xdg-activation-with-invalid-serial
+}
+
 // Work around WezTerm's initial configure bug
 // by setting an empty default-column-width.
 window-rule {
@@ -256,6 +275,8 @@ window-rule {
     // since this is the default config, and we want no false positives.
     // You can get away with just app-id="wezterm" if you want.
     match app-id=r#"^org\.wezfurlong\.wezterm$"#
+    //open-floating true
+    //open-fullscreen true
     default-column-width {}
 }
 
@@ -266,6 +287,7 @@ window-rule {
     // - Flatpak Firefox (app-id is "org.mozilla.firefox")
     match app-id=r#"firefox$"# title="^Picture-in-Picture$"
     match app-id=r#"^zen$"# title="^Picture-in-Picture$"
+    match app-id=r#"^$"# title="^Picture in picture$"
     // vivaldi notification window
     match app-id=r#"^$"# title="^$"
     //match app-id="com.ayugram.desktop" title="Media viewer"
@@ -302,6 +324,21 @@ window-rule {
 /-window-rule {
     geometry-corner-radius 12
     clip-to-geometry true
+}
+
+recent-windows {
+
+  previews {
+    max-height 480
+    max-scale 0.5
+  }
+
+  binds {
+    Mod+Tab         { next-window; }
+    Mod+Shift+Tab   { previous-window; }
+    Mod+grave       { next-window     filter="app-id"; }
+    Mod+Shift+grave { previous-window filter="app-id"; }
+  }
 }
 
 binds {
@@ -495,7 +532,7 @@ binds {
     // Mod+Ctrl+1 { move-window-to-workspace 1; }
 
     // Switches focus between the current and the previous workspace.
-    Mod+Tab { focus-workspace-previous; }
+    //Mod+Tab { focus-workspace-previous; }
 
     // The following binds move the focused window in and out of a column.
     // If the window is alone, they will consume it into the nearby column to the side.

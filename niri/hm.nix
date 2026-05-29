@@ -1,4 +1,4 @@
-{ pkgs, config, ... }@inputs:
+{ pkgs, config, lib, ... }@inputs:
 
 let
   vscode-modified = pkgs.vscode.overrideAttrs (oldAttrs: {
@@ -18,6 +18,12 @@ let
         --add-flags "--disable-gpu --enable-wayland-ime --wayland-text-input-version=3"
     '';
   });
+  # https://github.com/nix-community/home-manager/issues/322#issuecomment-1178614454
+  openssh-patched = pkgs.openssh.overrideAttrs (prev: {
+    patches = (prev.patches or [ ]) ++ [ ./openssh-nocheckcfg.patch ];
+  });
+  # https://github.com/nix-community/home-manager/issues/322#issuecomment-2265431023
+  zed-fhs-patched = inputs.nixpkgs-unstable.zed-editor.fhsWithPackages (_: [ openssh-patched ]);
 in
 {
   disabledModules = [ "programs/chromium.nix" ];
@@ -38,18 +44,19 @@ in
     inputs.nixpkgs-unstable.obsidian
     #inputs.nixpkgs-unstable.discord
     discord-modified
-    inputs.nixpkgs-unstable.zed-editor-fhs
+    zed-fhs-patched
     foliate
     # for dms theme
     papirus-icon-theme
   ]) ++ (with inputs.nixpkgs-unstable; [
-    jetbrains.datagrip
+    #jetbrains.datagrip
   ]);
 
   services.flameshot = {
     enable = true;
     package = (pkgs.flameshot.override { enableWlrSupport = true; });
     settings.General = {
+      useGrimAdapter = true;
       showStartupLaunchMessage = false;
     };
   };
@@ -204,14 +211,36 @@ in
     enable = true;
     package = inputs.nixpkgs-unstable.ungoogled-chromium;
     userDataDir = "${config.xdg.configHome}/.userdata/my-ug-chromium";
-    extensions = [
+    extensions =
+      let
+        createChromiumExtensionFor = browserVersion: { id, sha256, version }:
+          {
+            inherit id;
+            crxPath = builtins.fetchurl {
+              url = "https://clients2.google.com/service/update2/crx?response=redirect&acceptformat=crx2,crx3&prodversion=${browserVersion}&x=id%3D${id}%26installsource%3Dondemand%26uc";
+              name = "${id}.crx";
+              inherit sha256;
+            };
+            inherit version;
+          };
+        createChromiumExtension = createChromiumExtensionFor (lib.versions.major pkgs.ungoogled-chromium.version);
+      in [
       {
         id = "lkbebcjgcmobigpeffafkodonchffocl";
         #crxPath = "${config.home.homeDirectory}/nixos/chromium-extensions/bpc.crx";
         crxPath = "/home/physails/nixos/chromium-extensions/bpc.crx";
         version = "4.3.0.2";
       }
-      { id = "ddkjiahejlhfcafbddmgiahcphecmpfh"; } # ublock origin lite
+      # {
+      #   id = "ddkjiahejlhfcafbddmgiahcphecmpfh";
+      #   updateUrl = "https://clients2.google.com/service/update2/crx?response=redirect&acceptformat=crx2,crx3&prodversion=2026.315.1814&x=id%3Dddkjiahejlhfcafbddmgiahcphecmpfh%26installsource%3Dondemand%26uc";
+      #   version = "2026.315.1814";
+      # } # ublock origin lite
+      (createChromiumExtension {
+        id = "ddkjiahejlhfcafbddmgiahcphecmpfh";
+        version = "2026.315.1814";
+        sha256 = "sha256:0n4x59a5k7d4396c95n67naw7zyiin3rm9a6k1g6jn0i0s5cxkk7";
+      }) # ublock origin lite
     ];
 
     commandLineArgs = [
